@@ -1,0 +1,316 @@
+```yaml
+# =============================================================================
+# Organizational-SACU-Mammography
+# SACU Framework Configuration
+# =============================================================================
+
+project:
+  name: Organizational-SACU-Mammography
+  version: 1.0.0
+
+# =============================================================================
+# Input / Output Paths
+# =============================================================================
+
+paths:
+
+  input_train_matrix:
+    data/processed/modeling_matrices/X_train.csv
+
+  input_validation_matrix:
+    data/processed/modeling_matrices/X_validation.csv
+
+  input_test_matrix:
+    data/processed/modeling_matrices/X_test.csv
+
+  feature_group_mapping:
+    data/processed/modeling_matrices/feature_group_mapping.csv
+
+  output_dir:
+    results/sacu_framework
+
+# =============================================================================
+# Target Definition
+# =============================================================================
+
+target:
+
+  column_name:
+    diagnosis_label
+
+  positive_class:
+    1
+
+  negative_class:
+    0
+
+# =============================================================================
+# SACU Agent Definitions
+# =============================================================================
+
+agents:
+
+  LocalRegionalAgent:
+    enabled: true
+    role: local_regional_tissue_pattern_analysis
+    feature_group: LocalRegionalAgent
+    model_type: gradient_boosting
+    expected_feature_count: 680
+
+  MultiViewAgent:
+    enabled: true
+    role: multi_view_correlation_analysis
+    feature_group: MultiViewAgent
+    model_type: gradient_boosting
+    expected_feature_count: 684
+
+  BilateralAgent:
+    enabled: true
+    role: bilateral_asymmetry_analysis
+    feature_group: BilateralAgent
+    model_type: gradient_boosting
+    expected_feature_count: 684
+
+  TemporalSpatialAgent:
+    enabled: true
+    role: temporal_spatial_progression_analysis
+    feature_group: TemporalSpatialAgent
+    model_type: gradient_boosting
+    expected_feature_count: 1028
+
+  MetadataAgent:
+    enabled: true
+    role: metadata_context_analysis
+    feature_group: MetadataAgent
+    model_type: logistic_regression
+    expected_feature_count: 1
+
+  AdaptiveControlAgent:
+    enabled: true
+    role: adaptive_control_and_pathway_availability
+    feature_group: AdaptiveControlAgent
+    model_type: logistic_regression
+    expected_feature_count: 7
+
+# =============================================================================
+# Agent Model Hyperparameters
+# =============================================================================
+
+agent_hyperparameters:
+
+  gradient_boosting:
+    n_estimators: 300
+    learning_rate: 0.05
+    max_depth: 3
+    subsample: 0.8
+    random_state: 42
+
+  logistic_regression:
+    solver: liblinear
+    penalty: l2
+    C: 1.0
+    max_iter: 5000
+    class_weight: balanced
+    random_state: 42
+
+# =============================================================================
+# Organizational Coordination
+# =============================================================================
+
+coordination:
+
+  enabled: true
+
+  primary_fusion:
+    learned_shallow_meta_fusion
+
+  fusion_methods:
+    - learned_shallow_meta_fusion
+    - adaptive_weight_fusion
+    - fixed_equal_weight_fusion
+
+  learned_shallow_meta_fusion:
+    enabled: true
+    model_type: logistic_regression
+    input_features:
+      - agent_probability_outputs
+      - adaptive_control_features
+    class_weight: balanced
+
+  adaptive_weight_fusion:
+    enabled: true
+    normalize_weights: true
+    use_case_level_weights: true
+
+  fixed_equal_weight_fusion:
+    enabled: true
+    weight_policy: equal_across_enabled_agents
+
+# =============================================================================
+# Adaptive Weighting
+# =============================================================================
+
+adaptive_weighting:
+
+  enabled: true
+
+  weight_source:
+    adaptive_control_agent
+
+  normalize_weights:
+    true
+
+  save_case_level_weights:
+    true
+
+  output_file:
+    results/tables/Stage2D_Adaptive_Weights.csv
+
+# =============================================================================
+# Training Strategy
+# =============================================================================
+
+training:
+
+  random_seed: 42
+
+  validation_strategy:
+    fixed_validation_split
+
+  preserve_patient_level_partitioning:
+    true
+
+  class_imbalance_strategy:
+    class_weight
+
+  probability_outputs:
+    true
+
+  save_agent_predictions:
+    true
+
+  save_fusion_predictions:
+    true
+
+# =============================================================================
+# Evaluation Metrics
+# =============================================================================
+
+metrics:
+
+  primary_metric:
+    roc_auc
+
+  secondary_metrics:
+
+    - accuracy
+    - balanced_accuracy
+    - precision
+    - recall
+    - specificity
+    - f1
+    - mcc
+    - average_precision
+
+# =============================================================================
+# Thresholding
+# =============================================================================
+
+thresholding:
+
+  default_threshold:
+    0.50
+
+  optimize_threshold_on_validation:
+    true
+
+  optimization_metric:
+    balanced_accuracy
+
+# =============================================================================
+# Ablation Settings
+# =============================================================================
+
+ablation:
+
+  enabled: true
+
+  leave_one_agent_out:
+    true
+
+  evaluate_individual_agents:
+    true
+
+  evaluate_fusion_variants:
+    true
+
+# =============================================================================
+# Interpretability Outputs
+# =============================================================================
+
+interpretability:
+
+  save_agent_contributions:
+    true
+
+  save_pathway_weights:
+    true
+
+  save_dominant_pathway:
+    true
+
+  save_agent_level_predictions:
+    true
+
+# =============================================================================
+# Output Files
+# =============================================================================
+
+outputs:
+
+  performance_table:
+    results/tables/Stage2D_SACU_Performance.csv
+
+  agent_predictions:
+    results/tables/Stage2D_Agent_Predictions.csv
+
+  fusion_predictions:
+    results/tables/Stage2D_Fusion_Predictions.csv
+
+  exact_sacu_predictions:
+    results/tables/Stage2D2_Exact_SACU_Test_Predictions.csv
+
+  stage2e_ready_predictions:
+    results/tables/Stage2D2_Stage2E_Ready_Long_Predictions.csv
+
+  adaptive_weights:
+    results/tables/Stage2D_Adaptive_Weights.csv
+
+  summary_report:
+    results/reports/Stage2D_Organizational_SACU_Framework_Report.txt
+
+# =============================================================================
+# Reproducibility
+# =============================================================================
+
+reproducibility:
+
+  random_seed: 42
+
+  deterministic_execution:
+    true
+
+# =============================================================================
+# Logging
+# =============================================================================
+
+logging:
+
+  level: INFO
+
+  save_log_file:
+    true
+
+  log_file:
+    results/reports/sacu_framework.log
+```
