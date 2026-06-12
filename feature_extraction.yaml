@@ -1,0 +1,348 @@
+```yaml
+# =============================================================================
+# Organizational-SACU-Mammography
+# Organizational Feature Extraction Configuration
+# =============================================================================
+
+project:
+  name: Organizational-SACU-Mammography
+  version: 1.0.0
+
+# =============================================================================
+# Input / Output Paths
+# =============================================================================
+
+paths:
+
+  input_manifest:
+    data/manifests/modeling_manifest.csv
+
+  input_processed_images:
+    data/processed/images
+
+  input_metadata:
+    data/processed/harmonized_metadata.csv
+
+  input_multiview_pairs:
+    data/processed/multiview_pairs.csv
+
+  input_temporal_cohorts:
+    data/processed/temporal_cohorts.csv
+
+  output_feature_dir:
+    data/processed/features
+
+  output_feature_matrix:
+    data/processed/features/organizational_feature_matrix.csv
+
+  output_feature_summary:
+    data/processed/features/feature_extraction_summary.csv
+
+# =============================================================================
+# General Feature Extraction Settings
+# =============================================================================
+
+feature_extraction:
+
+  enabled: true
+
+  save_intermediate_features: true
+
+  normalize_features: true
+
+  handle_missing_values: true
+
+  missing_value_strategy:
+    numeric: median
+    categorical: most_frequent
+
+  standardization:
+    enabled: true
+    method: zscore
+
+# =============================================================================
+# Regional Partitioning
+# =============================================================================
+
+regional_partitioning:
+
+  enabled: true
+
+  grid_size:
+    rows: 4
+    columns: 4
+
+  include_global_region: true
+
+  minimum_valid_region_area_ratio: 0.05
+
+# =============================================================================
+# Local-Regional Pathway Features
+# =============================================================================
+
+local_regional_features:
+
+  enabled: true
+
+  pathway_name: LocalRegionalAgent
+
+  intensity_statistics:
+    enabled: true
+    features:
+      - mean
+      - std
+      - median
+      - min
+      - max
+      - skewness
+      - kurtosis
+
+  density_descriptors:
+    enabled: true
+    features:
+      - high_intensity_fraction
+      - low_intensity_fraction
+      - intensity_entropy
+
+  texture_descriptors:
+    enabled: true
+    features:
+      - contrast
+      - homogeneity
+      - energy
+      - correlation
+
+  regional_aggregation:
+    enabled: true
+    aggregate_statistics:
+      - mean
+      - std
+      - max
+      - min
+
+# =============================================================================
+# Multi-View Pathway Features
+# =============================================================================
+
+multiview_features:
+
+  enabled: true
+
+  pathway_name: MultiViewAgent
+
+  required_views:
+    - CC
+    - MLO
+
+  feature_strategy:
+    paired_view_difference
+
+  features:
+    - cc_mlo_intensity_difference
+    - cc_mlo_texture_difference
+    - cc_mlo_density_difference
+    - cc_mlo_global_similarity
+    - cc_mlo_regional_consistency
+
+  missing_view_policy:
+    use_pathway_mask
+    fill_value: 0.0
+
+# =============================================================================
+# Bilateral Pathway Features
+# =============================================================================
+
+bilateral_features:
+
+  enabled: true
+
+  pathway_name: BilateralAgent
+
+  required_lateralities:
+    - LEFT
+    - RIGHT
+
+  feature_strategy:
+    left_right_difference
+
+  features:
+    - bilateral_intensity_difference
+    - bilateral_texture_difference
+    - bilateral_density_difference
+    - bilateral_regional_asymmetry
+    - bilateral_global_asymmetry
+
+  missing_laterality_policy:
+    use_pathway_mask
+    fill_value: 0.0
+
+# =============================================================================
+# Temporal-Spatial Pathway Features
+# =============================================================================
+
+temporal_spatial_features:
+
+  enabled: true
+
+  pathway_name: TemporalSpatialAgent
+
+  require_prior_exam: false
+
+  feature_strategy:
+    chronological_difference
+
+  features:
+    - temporal_intensity_change
+    - temporal_texture_change
+    - temporal_density_change
+    - temporal_regional_progression
+    - temporal_gap_days
+
+  missing_prior_exam_policy:
+    use_pathway_mask
+    fill_value: 0.0
+
+  temporal_gap_handling:
+    include_gap_as_feature: true
+    normalize_gap_days: true
+
+# =============================================================================
+# Metadata Pathway Features
+# =============================================================================
+
+metadata_features:
+
+  enabled: true
+
+  pathway_name: MetadataAgent
+
+  features:
+    - age
+    - breast_density
+    - acquisition_site
+    - scanner_manufacturer
+
+  missing_metadata_policy:
+    impute
+
+  categorical_encoding:
+    method: onehot
+
+# =============================================================================
+# Adaptive-Control Features
+# =============================================================================
+
+adaptive_control_features:
+
+  enabled: true
+
+  pathway_name: AdaptiveControlAgent
+
+  features:
+    - view_completeness_score
+    - bilateral_availability_score
+    - temporal_availability_score
+    - metadata_completeness_score
+    - examination_complexity_score
+    - pathway_missingness_count
+    - active_pathway_count
+
+# =============================================================================
+# Pathway Masks
+# =============================================================================
+
+pathway_masks:
+
+  enabled: true
+
+  create_local_regional_mask: true
+  create_multiview_mask: true
+  create_bilateral_mask: true
+  create_temporal_spatial_mask: true
+  create_metadata_mask: true
+  create_adaptive_control_mask: true
+
+  mask_values:
+    available: 1
+    unavailable: 0
+
+# =============================================================================
+# Feature Validation
+# =============================================================================
+
+validation:
+
+  enabled: true
+
+  check_missing_values: true
+  check_constant_features: true
+  check_infinite_values: true
+  check_duplicate_features: true
+
+  remove_constant_features: true
+  remove_duplicate_features: false
+
+# =============================================================================
+# Output Schema
+# =============================================================================
+
+output_columns:
+
+  include_identifiers: true
+  include_target: true
+  include_pathway_masks: true
+  include_feature_group_labels: true
+
+  identifier_columns:
+    - patient_id
+    - study_id
+    - exam_date
+
+  target_column:
+    diagnosis_label
+
+# =============================================================================
+# Reproducibility
+# =============================================================================
+
+reproducibility:
+
+  random_seed: 42
+
+# =============================================================================
+# Logging
+# =============================================================================
+
+logging:
+
+  level: INFO
+
+  save_log_file: true
+
+  log_file:
+    data/processed/features/feature_extraction.log
+
+# =============================================================================
+# Reports
+# =============================================================================
+
+reports:
+
+  save_feature_summary: true
+
+  save_pathway_feature_counts: true
+
+  save_missingness_report: true
+
+  feature_summary_file:
+    data/processed/features/feature_extraction_summary.csv
+
+  pathway_feature_count_file:
+    data/processed/features/pathway_feature_counts.csv
+
+  missingness_report_file:
+    data/processed/features/feature_missingness_report.csv
+
+  text_report_file:
+    results/reports/feature_extraction_report.txt
+```
