@@ -1,0 +1,56 @@
+```yaml
+cff-version: 1.2.0
+title: "Organizational-SACU-Mammography"
+message: "If you use this software, please cite both the software repository and the associated research article."
+type: software
+
+authors:
+  - family-names: "Rokaya"
+    given-names: "Mahmoud"
+    orcid: "https://orcid.org/0000-0002-8590-096X"
+
+repository-code: "https://github.com/mahmoudrokaya/Organizational-SACU-Mammography"
+
+abstract: >
+  Organizational-SACU-Mammography provides a complete implementation of an
+  organizational shallow-agent framework for mammography-based breast cancer
+  detection. The framework integrates multi-view mammographic relationships,
+  bilateral anatomical symmetry, temporal progression analysis, adaptive
+  cooperative coordination, clinical operating-point analysis, statistical
+  validation, interpretability assessment, and coordination-mechanism ablation
+  within a unified reproducible pipeline.
+
+keywords:
+  - mammography
+  - breast cancer detection
+  - medical imaging
+  - organizational intelligence
+  - shallow-agent architecture
+  - SACU
+  - multi-view learning
+  - bilateral asymmetry
+  - temporal modeling
+  - interpretable AI
+
+license: MIT
+
+version: 1.0.0
+
+date-released: 2026-06-12
+
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Rokaya"
+      given-names: "Mahmoud"
+  title: >
+    Organizational Shallow-Agent Architecture for Multi-View,
+    Bilateral, and Temporal Mammography Analysis
+  journal: "Frontiers in Artificial Intelligence"
+  status: "under review"
+
+references:
+  - type: software
+    title: "Organizational-SACU-Mammography"
+    repository-code: "https://github.com/mahmoudrokaya/Organizational-SACU-Mammography"
+```
