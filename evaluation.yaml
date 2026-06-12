@@ -1,0 +1,412 @@
+```yaml
+# =============================================================================
+# Organizational-SACU-Mammography
+# Evaluation and Analysis Configuration
+# =============================================================================
+
+project:
+  name: Organizational-SACU-Mammography
+  version: 1.0.0
+
+# =============================================================================
+# Input Files
+# =============================================================================
+
+paths:
+
+  baseline_predictions:
+    results/tables/Stage2C_Baseline_Predictions.csv
+
+  sacu_predictions:
+    results/tables/Stage2D2_Exact_SACU_Test_Predictions.csv
+
+  pathway_contributions:
+    results/tables/Stage2I_Pathway_Contribution_Summary.csv
+
+  adaptive_weights:
+    results/tables/Stage2D_Adaptive_Weights.csv
+
+  output_dir:
+    results
+
+# =============================================================================
+# Classification Target
+# =============================================================================
+
+target:
+
+  positive_class:
+    1
+
+  negative_class:
+    0
+
+# =============================================================================
+# General Evaluation Settings
+# =============================================================================
+
+evaluation:
+
+  random_seed:
+    42
+
+  probability_based_evaluation:
+    true
+
+  save_predictions:
+    true
+
+  save_confusion_matrices:
+    true
+
+# =============================================================================
+# Core Performance Metrics
+# =============================================================================
+
+metrics:
+
+  primary_metric:
+    roc_auc
+
+  classification_metrics:
+
+    - accuracy
+    - balanced_accuracy
+    - precision
+    - recall
+    - specificity
+    - f1
+    - mcc
+    - average_precision
+
+  calibration_metrics:
+
+    - brier_score
+
+# =============================================================================
+# Clinical Operating Point Analysis (Stage2E)
+# =============================================================================
+
+clinical_threshold_analysis:
+
+  enabled: true
+
+  threshold_grid:
+
+    start: 0.05
+    stop: 0.95
+    step: 0.01
+
+  default_threshold:
+    0.50
+
+  optimization_metric:
+    balanced_accuracy
+
+  save_threshold_comparison:
+    true
+
+  save_operating_point_performance:
+    true
+
+# =============================================================================
+# ROC Analysis
+# =============================================================================
+
+roc_analysis:
+
+  enabled: true
+
+  compute_auc:
+    true
+
+  save_curve_points:
+    true
+
+  save_roc_figure:
+    true
+
+# =============================================================================
+# Precision-Recall Analysis
+# =============================================================================
+
+pr_analysis:
+
+  enabled: true
+
+  compute_average_precision:
+    true
+
+  save_curve_points:
+    true
+
+  save_pr_figure:
+    true
+
+# =============================================================================
+# Organizational Ablation Analysis (Stage2F)
+# =============================================================================
+
+ablation_analysis:
+
+  enabled: true
+
+  leave_one_agent_out:
+    true
+
+  evaluate_individual_agents:
+    true
+
+  evaluate_full_framework:
+    true
+
+  contribution_measure:
+    roc_auc_loss
+
+# =============================================================================
+# Statistical Validation (Stage2G)
+# =============================================================================
+
+bootstrap_validation:
+
+  enabled: true
+
+  n_bootstrap:
+    2000
+
+  confidence_level:
+    0.95
+
+  random_seed:
+    42
+
+  metrics:
+
+    - roc_auc
+    - balanced_accuracy
+    - precision
+    - recall
+    - f1
+
+# =============================================================================
+# Pairwise Model Comparison
+# =============================================================================
+
+pairwise_comparison:
+
+  enabled: true
+
+  reference_model:
+    SACU
+
+  compare_against:
+
+    - LogisticRegression
+    - RandomForest
+    - ExtraTrees
+    - GradientBoosting
+    - AdaBoost
+
+# =============================================================================
+# Interpretability Analysis (Stage2I)
+# =============================================================================
+
+interpretability:
+
+  enabled: true
+
+  pathway_contributions:
+    true
+
+  dominant_pathway_analysis:
+    true
+
+  adaptive_weight_distribution:
+    true
+
+  pathway_correctness_association:
+    true
+
+# =============================================================================
+# Coordination Validation (Stage2J)
+# =============================================================================
+
+coordination_validation:
+
+  enabled: true
+
+  evaluate_fixed_equal_weights:
+    true
+
+  evaluate_static_global_weights:
+    true
+
+  evaluate_adaptive_weights:
+    true
+
+  evaluate_learned_meta_fusion:
+    true
+
+  evaluate_topk_pathways:
+    true
+
+  evaluate_dominant_pathway_only:
+    true
+
+# =============================================================================
+# Adaptive Weight Analysis
+# =============================================================================
+
+adaptive_weight_analysis:
+
+  enabled: true
+
+  compute_weight_entropy:
+    true
+
+  compute_case_level_variability:
+    true
+
+  compute_pathway_switching:
+    true
+
+# =============================================================================
+# Resource-Limited Analysis
+# =============================================================================
+
+resource_limited_analysis:
+
+  enabled: true
+
+  top_k_values:
+
+    - 1
+    - 2
+    - 3
+    - 4
+
+# =============================================================================
+# Figures
+# =============================================================================
+
+figures:
+
+  dpi:
+    300
+
+  format:
+    png
+
+  save_roc_figures:
+    true
+
+  save_pr_figures:
+    true
+
+  save_ablation_figures:
+    true
+
+  save_interpretability_figures:
+    true
+
+  save_coordination_figures:
+    true
+
+# =============================================================================
+# Tables
+# =============================================================================
+
+tables:
+
+  save_performance_tables:
+    true
+
+  save_threshold_tables:
+    true
+
+  save_ablation_tables:
+    true
+
+  save_bootstrap_tables:
+    true
+
+  save_interpretability_tables:
+    true
+
+  save_coordination_tables:
+    true
+
+# =============================================================================
+# Reports
+# =============================================================================
+
+reports:
+
+  save_stage2e_report:
+    true
+
+  save_stage2f_report:
+    true
+
+  save_stage2g_report:
+    true
+
+  save_stage2i_report:
+    true
+
+  save_stage2j_report:
+    true
+
+# =============================================================================
+# Output Files
+# =============================================================================
+
+outputs:
+
+  stage2e:
+    performance:
+      results/tables/Stage2E_Clinical_Operating_Point_Performance.csv
+
+  stage2f:
+    ablation:
+      results/tables/Stage2F_Ablation_Performance.csv
+
+  stage2g:
+    confidence_intervals:
+      results/tables/Stage2G_Model_Metric_CI.csv
+
+  stage2i:
+    pathway_contributions:
+      results/tables/Stage2I_Pathway_Contribution_Summary.csv
+
+  stage2j:
+    coordination_ablation:
+      results/tables/Stage2J_Coordination_Ablation_Performance.csv
+
+# =============================================================================
+# Reproducibility
+# =============================================================================
+
+reproducibility:
+
+  random_seed:
+    42
+
+  deterministic_execution:
+    true
+
+# =============================================================================
+# Logging
+# =============================================================================
+
+logging:
+
+  level:
+    INFO
+
+  save_log_file:
+    true
+
+  log_file:
+    results/reports/evaluation.log
+```
