@@ -1,0 +1,359 @@
+# src/organizational_sacu_mammography/features/feature_matrix_builder.py
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Dict, Iterable, List, Tuple
+
+import numpy as np
+import pandas as pd
+
+
+@dataclass
+class FeatureMatrixConfig:
+    """
+    Configuration for organizational feature-matrix construction.
+    """
+
+    patient_col: str = "patient_id"
+    study_col: str = "study_id"
+    exam_date_col: str = "exam_date"
+    label_col: str = "diagnosis_label"
+
+    split_col: str = "split"
+
+    fill_missing_value: float = 0.0
+
+    include_identifier_columns: bool = true
+    include_split_column: bool = true
+    include_target_column: bool = true
+
+    feature_prefixes: tuple[str, ...] = (
+        "local_",
+        "global_",
+        "multiview_",
+        "bilateral_",
+        "temporal_",
+        "metadata_",
+        "adaptive_",
+        "pathway_",
+    )
+
+
+def _safe_bool(value: bool) -> bool:
+    return bool(value)
+
+
+def _validate_dataframe(df: pd.DataFrame) -> None:
+    if not isinstance(df, pd.DataFrame):
+        raise TypeError("Input must be a pandas DataFrame.")
+
+    if df.empty:
+        raise ValueError("Input dataframe is empty.")
+
+
+def _flatten_feature_dicts(
+    feature_dicts: Iterable[Dict[str, float]],
+) -> pd.DataFrame:
+    rows = []
+
+    for feature_dict in feature_dicts:
+        rows.append(dict(feature_dict))
+
+    if not rows:
+        return pd.DataFrame()
+
+    return pd.DataFrame(rows).fillna(0.0)
+
+
+def build_feature_matrix(
+    base_manifest: pd.DataFrame,
+    feature_tables: Dict[str, pd.DataFrame],
+    config: FeatureMatrixConfig = FeatureMatrixConfig(),
+) -> pd.DataFrame:
+    """
+    Build a single organizational feature matrix.
+
+    Parameters
+    ----------
+    base_manifest:
+        Examination-level manifest containing identifiers, target labels,
+        and optional split column.
+
+    feature_tables:
+        Dictionary of feature tables keyed by pathway name. Each table must
+        have the same row order as base_manifest or include patient/study keys.
+
+    Returns
+    -------
+    pd.DataFrame
+        Combined modeling-ready feature matrix.
+    """
+
+    _validate_dataframe(base_manifest)
+
+    matrix_parts = []
+
+    id_cols = [
+        config.patient_col,
+        config.study_col,
+        config.exam_date_col,
+    ]
+
+    if config.include_identifier_columns:
+        available_id_cols = [
+            col for col in id_cols
+            if col in base_manifest.columns
+        ]
+        matrix_parts.append(base_manifest[available_id_cols].reset_index(drop=True))
+
+    if config.include_split_column and config.split_col in base_manifest.columns:
+        matrix_parts.append(base_manifest[[config.split_col]].reset_index(drop=True))
+
+    if config.include_target_column:
+        if config.label_col not in base_manifest.columns:
+            raise KeyError(f"Missing target column: {config.label_col}")
+        matrix_parts.append(base_manifest[[config.label_col]].reset_index(drop=True))
+
+    n_rows = len(base_manifest)
+
+    for name, table in feature_tables.items():
+        if table is None or table.empty:
+            continue
+
+        table = table.copy().reset_index(drop=True)
+
+        if len(table) != n_rows:
+            raise ValueError(
+                f"Feature table '{name}' has {len(table)} rows, "
+                f"but base manifest has {n_rows} rows."
+            )
+
+        matrix_parts.append(table)
+
+    if not matrix_parts:
+        raise ValueError("No matrix components were provided.")
+
+    out = pd.concat(matrix_parts, axis=1)
+
+    out = out.loc[:, ~out.columns.duplicated()]
+
+    feature_cols = identify_feature_columns(out, config=config)
+
+    out[feature_cols] = out[feature_cols].replace([np.inf, -np.inf], np.nan)
+    out[feature_cols] = out[feature_cols].fillna(config.fill_missing_value)
+
+    return out
+
+
+def identify_feature_columns(
+    feature_matrix: pd.DataFrame,
+    config: FeatureMatrixConfig = FeatureMatrixConfig(),
+) -> List[str]:
+    """
+    Identify feature columns using configured prefixes.
+    """
+
+    reserved = {
+        config.patient_col,
+        config.study_col,
+        config.exam_date_col,
+        config.label_col,
+        config.split_col,
+    }
+
+    feature_cols = []
+
+    for col in feature_matrix.columns:
+        if col in reserved:
+            continue
+
+        if any(str(col).startswith(prefix) for prefix in config.feature_prefixes):
+            feature_cols.append(col)
+
+    return feature_cols
+
+
+def split_feature_matrix(
+    feature_matrix: pd.DataFrame,
+    config: FeatureMatrixConfig = FeatureMatrixConfig(),
+) -> Tuple[pd.DataFrame, pd.Series]:
+    """
+    Split feature matrix into X and y.
+    """
+
+    if config.label_col not in feature_matrix.columns:
+        raise KeyError(f"Missing target column: {config.label_col}")
+
+    feature_cols = identify_feature_columns(feature_matrix, config=config)
+
+    if not feature_cols:
+        raise ValueError("No feature columns were identified.")
+
+    X = feature_matrix[feature_cols].copy()
+    y = feature_matrix[config.label_col].astype(int).copy()
+
+    return X, y
+
+
+def build_split_matrices(
+    feature_matrix: pd.DataFrame,
+    config: FeatureMatrixConfig = FeatureMatrixConfig(),
+) -> Dict[str, Tuple[pd.DataFrame, pd.Series]]:
+    """
+    Build train/validation/test matrices using the split column.
+    """
+
+    if config.split_col not in feature_matrix.columns:
+        raise KeyError(f"Missing split column: {config.split_col}")
+
+    output: Dict[str, Tuple[pd.DataFrame, pd.Series]] = {}
+
+    for split_name in ["train", "validation", "test"]:
+        subset = feature_matrix[
+            feature_matrix[config.split_col] == split_name
+        ].copy()
+
+        if subset.empty:
+            continue
+
+        output[split_name] = split_feature_matrix(
+            subset,
+            config=config,
+        )
+
+    return output
+
+
+def summarize_feature_matrix(
+    feature_matrix: pd.DataFrame,
+    config: FeatureMatrixConfig = FeatureMatrixConfig(),
+) -> pd.DataFrame:
+    """
+    Summarize matrix structure and target distribution.
+    """
+
+    feature_cols = identify_feature_columns(feature_matrix, config=config)
+
+    rows = [
+        {
+            "metric": "n_rows",
+            "value": int(len(feature_matrix)),
+        },
+        {
+            "metric": "n_columns",
+            "value": int(feature_matrix.shape[1]),
+        },
+        {
+            "metric": "n_feature_columns",
+            "value": int(len(feature_cols)),
+        },
+    ]
+
+    if config.label_col in feature_matrix.columns:
+        rows.append(
+            {
+                "metric": "positive_cases",
+                "value": int((feature_matrix[config.label_col] == 1).sum()),
+            }
+        )
+        rows.append(
+            {
+                "metric": "negative_cases",
+                "value": int((feature_matrix[config.label_col] == 0).sum()),
+            }
+        )
+        rows.append(
+            {
+                "metric": "positive_fraction",
+                "value": float(feature_matrix[config.label_col].mean()),
+            }
+        )
+
+    if config.split_col in feature_matrix.columns:
+        for split_name, group in feature_matrix.groupby(config.split_col):
+            rows.append(
+                {
+                    "metric": f"{split_name}_rows",
+                    "value": int(len(group)),
+                }
+            )
+
+    return pd.DataFrame(rows)
+
+
+def summarize_feature_groups(
+    feature_matrix: pd.DataFrame,
+    config: FeatureMatrixConfig = FeatureMatrixConfig(),
+) -> pd.DataFrame:
+    """
+    Count features by organizational pathway prefix.
+    """
+
+    feature_cols = identify_feature_columns(feature_matrix, config=config)
+
+    rows = []
+
+    for prefix in config.feature_prefixes:
+        cols = [
+            col for col in feature_cols
+            if str(col).startswith(prefix)
+        ]
+
+        rows.append(
+            {
+                "feature_group": prefix.rstrip("_"),
+                "n_features": int(len(cols)),
+            }
+        )
+
+    return pd.DataFrame(rows)
+
+
+def save_feature_matrix_outputs(
+    feature_matrix: pd.DataFrame,
+    output_dir: str,
+    config: FeatureMatrixConfig = FeatureMatrixConfig(),
+) -> Dict[str, str]:
+    """
+    Save combined feature matrix and split matrices.
+    """
+
+    from pathlib import Path
+
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    files: Dict[str, str] = {}
+
+    full_path = output_path / "organizational_feature_matrix.csv"
+    feature_matrix.to_csv(full_path, index=False)
+    files["full_feature_matrix"] = str(full_path)
+
+    split_mats = build_split_matrices(feature_matrix, config=config)
+
+    for split_name, (X, y) in split_mats.items():
+        x_path = output_path / f"X_{split_name}.csv"
+        y_path = output_path / f"y_{split_name}.csv"
+
+        X.to_csv(x_path, index=False)
+        y.to_csv(y_path, index=False)
+
+        files[f"X_{split_name}"] = str(x_path)
+        files[f"y_{split_name}"] = str(y_path)
+
+    summary_path = output_path / "feature_matrix_summary.csv"
+    summarize_feature_matrix(feature_matrix, config=config).to_csv(
+        summary_path,
+        index=False,
+    )
+    files["summary"] = str(summary_path)
+
+    group_path = output_path / "feature_group_summary.csv"
+    summarize_feature_groups(feature_matrix, config=config).to_csv(
+        group_path,
+        index=False,
+    )
+    files["feature_groups"] = str(group_path)
+
+    return files
