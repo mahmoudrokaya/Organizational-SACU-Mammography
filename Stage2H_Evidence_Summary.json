@@ -1,0 +1,166 @@
+{
+    "generated": "2026-06-11 06:49:00.188161",
+    "primary_model": "SACU_LearnedShallowMetaFusion",
+    "baseline_model": "Baseline_GradientBoosting",
+    "input_files": {
+        "stage2e_performance": "D:\\47\\472\\New-Papers\\Frontires_Atlam2-2026\\Experiments\\results\\tables\\Stage2E_Exact_Clinical_Operating_Point_Performance.csv",
+        "stage2e_rocp": "D:\\47\\472\\New-Papers\\Frontires_Atlam2-2026\\Experiments\\results\\tables\\Stage2E_Exact_ROC_PR_Summary.csv",
+        "stage2f_ablation": "D:\\47\\472\\New-Papers\\Frontires_Atlam2-2026\\Experiments\\results\\tables\\Stage2F_Ablation_Performance.csv",
+        "stage2f_contribution": "D:\\47\\472\\New-Papers\\Frontires_Atlam2-2026\\Experiments\\results\\tables\\Stage2F_Role_Contribution_Loss.csv",
+        "stage2f_agent": "D:\\47\\472\\New-Papers\\Frontires_Atlam2-2026\\Experiments\\results\\tables\\Stage2F_Individual_Agent_Performance.csv",
+        "stage2g_model_ci": "D:\\47\\472\\New-Papers\\Frontires_Atlam2-2026\\Experiments\\results\\tables\\Stage2G_Model_Metric_CI.csv",
+        "stage2g_pairwise": "D:\\47\\472\\New-Papers\\Frontires_Atlam2-2026\\Experiments\\results\\tables\\Stage2G_Paired_Model_Comparison.csv",
+        "stage2g_primary_op_ci": "D:\\47\\472\\New-Papers\\Frontires_Atlam2-2026\\Experiments\\results\\tables\\Stage2G_Primary_Model_Operating_Point_CI.csv"
+    },
+    "key_evidence": [
+        {
+            "evidence_topic": "Primary SACU discrimination",
+            "main_result": "ROC-AUC = 0.7161 (0.6571\u20130.7784)",
+            "supporting_result": "Balanced accuracy = 0.6762 (0.6290\u20130.7256)",
+            "source_stage": "Stage2G",
+            "recommended_use": "Main Results / Statistical validation",
+            "claim_strength": "Supported with bootstrap CI"
+        },
+        {
+            "evidence_topic": "Baseline comparison",
+            "main_result": "Baseline ROC-AUC = 0.7245 (0.6648\u20130.7790)",
+            "supporting_result": "Baseline balanced accuracy = 0.6102 (0.5714\u20130.6543)",
+            "source_stage": "Stage2G",
+            "recommended_use": "Fair comparison paragraph",
+            "claim_strength": "Do not claim significant ROC-AUC superiority over baseline"
+        },
+        {
+            "evidence_topic": "Paired SACU vs GradientBoosting ROC-AUC comparison",
+            "main_result": "\u0394ROC-AUC = -0.0084, 95% CI -0.0436\u20130.0283",
+            "supporting_result": "bootstrap p = 0.625",
+            "source_stage": "Stage2G",
+            "recommended_use": "Reviewer response on statistical testing",
+            "claim_strength": "Difference not statistically significant"
+        },
+        {
+            "evidence_topic": "Clinical operating-point optimization",
+            "main_result": "Youden threshold = 0.5555; balanced accuracy = 0.6856",
+            "supporting_result": "Default balanced accuracy = 0.6762; specificity improved from 0.9148 to 0.9336",
+            "source_stage": "Stage2E",
+            "recommended_use": "Clinical threshold paragraph / Table",
+            "claim_strength": "Supported as post-hoc operating-point analysis"
+        },
+        {
+            "evidence_topic": "High-sensitivity operating point",
+            "main_result": "Sensitivity = 0.9062 at threshold 0.1807",
+            "supporting_result": "Specificity = 0.2246; NPV = 0.9575",
+            "source_stage": "Stage2E",
+            "recommended_use": "Supplementary clinical deployment analysis",
+            "claim_strength": "Useful but specificity trade-off must be stated"
+        },
+        {
+            "evidence_topic": "Individual organizational agents",
+            "main_result": "LocalRegionalAgent ROC-AUC=0.7053; BilateralAgent ROC-AUC=0.7039",
+            "supporting_result": "Individual agents did not exceed learned SACU fusion in balanced accuracy.",
+            "source_stage": "Stage2F",
+            "recommended_use": "Ablation / organizational role contribution",
+            "claim_strength": "Supports value of fusion over isolated agents"
+        },
+        {
+            "evidence_topic": "Largest positive role contribution",
+            "main_result": "Removing BilateralAgent caused \u0394ROC-AUC loss = 0.0309",
+            "supporting_result": "\u0394AP = 0.0290; \u0394F1 = 0.0339",
+            "source_stage": "Stage2F",
+            "recommended_use": "Role-contribution table",
+            "claim_strength": "Use cautiously as equal-weight leave-one-out evidence"
+        },
+        {
+            "evidence_topic": "Statistically supported SACU superiority over weaker agents",
+            "main_result": "Primary SACU significantly exceeded: MultiViewAgent, TemporalSpatialAgent, MetadataAgent, AdaptiveControlAgent",
+            "supporting_result": "Bootstrap paired comparisons used 2,000 resamples.",
+            "source_stage": "Stage2G",
+            "recommended_use": "Statistical comparison paragraph",
+            "claim_strength": "Supported for listed agents only"
+        }
+    ],
+    "recommended_tables": [
+        {
+            "table_id": "Table 10",
+            "proposed_title": "Clinical operating-point analysis of the learned SACU fusion",
+            "source_files": "Stage2E_Exact_Clinical_Operating_Point_Performance.csv; Stage2G_Primary_Model_Operating_Point_CI.csv",
+            "main_content": "Default, Youden, high-sensitivity, and high-specificity thresholds; balanced accuracy, sensitivity, specificity, PPV, NPV, F1, MCC",
+            "reviewer_issue_addressed": "Threshold selection, calibration-like operating behavior, clinical deployment interpretation"
+        },
+        {
+            "table_id": "Table 11",
+            "proposed_title": "Organizational role contribution and SACU ablation analysis",
+            "source_files": "Stage2F_Ablation_Performance.csv; Stage2F_Role_Contribution_Loss.csv; Stage2F_Individual_Agent_Performance.csv",
+            "main_content": "Full learned fusion, equal-weight fusion, leave-one-agent-out conditions, individual agents, and role contribution loss",
+            "reviewer_issue_addressed": "Ablation evidence, role contribution, model component necessity"
+        },
+        {
+            "table_id": "Table 12",
+            "proposed_title": "Bootstrap confidence intervals for baseline, SACU fusion, and organizational agents",
+            "source_files": "Stage2G_Model_Metric_CI.csv",
+            "main_content": "ROC-AUC, PR-AUC, balanced accuracy, sensitivity, specificity, F1, MCC with 95% CIs",
+            "reviewer_issue_addressed": "Point estimates, uncertainty ranges, statistical reporting"
+        },
+        {
+            "table_id": "Table 13",
+            "proposed_title": "Paired bootstrap model-comparison analysis",
+            "source_files": "Stage2G_Paired_Model_Comparison.csv",
+            "main_content": "Primary SACU vs GradientBoosting baseline and agents; paired metric differences, 95% CIs, bootstrap p-values",
+            "reviewer_issue_addressed": "Statistical model comparison and fair interpretation of superiority claims"
+        }
+    ],
+    "recommended_figures": [
+        {
+            "figure_id": "Figure 11",
+            "proposed_title": "Clinical ROC and precision\u2013recall operating-point curves",
+            "source_files": "Stage2E_Exact_ROC_Operating_Points.png; Stage2E_Exact_PR_Operating_Points.png",
+            "main_message": "Learned SACU fusion has clinically interpretable threshold-dependent behavior.",
+            "reviewer_issue_addressed": "ROC/PR curves and decision-threshold transparency"
+        },
+        {
+            "figure_id": "Figure 12",
+            "proposed_title": "Bootstrap confidence intervals for ROC-AUC and balanced accuracy",
+            "source_files": "Stage2G_ROCAUC_CI_Bar.png; Stage2G_BalancedAccuracy_CI_Bar.png",
+            "main_message": "Uncertainty ranges show SACU is statistically comparable to the strongest baseline and stronger than weaker agents.",
+            "reviewer_issue_addressed": "Confidence intervals and statistical uncertainty"
+        },
+        {
+            "figure_id": "Figure 13",
+            "proposed_title": "Organizational role contribution analysis",
+            "source_files": "Stage2F_Ablation_BalancedAccuracy_Bar.png; Stage2F_Role_Contribution_Loss_Bar.png",
+            "main_message": "Bilateral and local-regional roles provide the clearest positive marginal contributions.",
+            "reviewer_issue_addressed": "Ablation and organizational role contribution"
+        }
+    ],
+    "response_claims": [
+        {
+            "reviewer_concern": "Results were reported mainly as point estimates.",
+            "response_claim": "We added bootstrap 95% confidence intervals for ROC-AUC, PR-AUC, balanced accuracy, sensitivity, specificity, F1, and MCC.",
+            "evidence_source": "Stage2G_Model_Metric_CI.csv",
+            "safe_language": "The revised analysis reports uncertainty ranges rather than relying only on point estimates."
+        },
+        {
+            "reviewer_concern": "Model comparisons lacked statistical testing.",
+            "response_claim": "We added paired bootstrap comparisons between the learned SACU fusion, GradientBoosting baseline, fusion variants, and individual organizational agents.",
+            "evidence_source": "Stage2G_Paired_Model_Comparison.csv",
+            "safe_language": "The learned SACU fusion was statistically higher than weaker agents, while its ROC-AUC difference from GradientBoosting was not statistically significant."
+        },
+        {
+            "reviewer_concern": "Clinical threshold selection was unclear.",
+            "response_claim": "We added a clinical operating-point analysis comparing default, Youden, high-sensitivity, and high-specificity thresholds.",
+            "evidence_source": "Stage2E_Exact_Clinical_Operating_Point_Performance.csv",
+            "safe_language": "Threshold optimization improved balanced operating behavior without changing the trained model."
+        },
+        {
+            "reviewer_concern": "The contribution of organizational roles was insufficiently demonstrated.",
+            "response_claim": "We added individual-agent performance, leave-one-agent-out ablation, and role contribution loss analyses.",
+            "evidence_source": "Stage2F_Ablation_Performance.csv; Stage2F_Role_Contribution_Loss.csv",
+            "safe_language": "Bilateral and local-regional roles showed the clearest positive marginal signal; we avoid claiming that every role independently improves performance."
+        },
+        {
+            "reviewer_concern": "Claims of superiority were too strong.",
+            "response_claim": "We revised the interpretation to distinguish discrimination, balanced operating behavior, and statistical significance.",
+            "evidence_source": "Stage2G_Paired_Model_Comparison.csv",
+            "safe_language": "The revised manuscript no longer claims universal state-of-the-art superiority."
+        }
+    ]
+}

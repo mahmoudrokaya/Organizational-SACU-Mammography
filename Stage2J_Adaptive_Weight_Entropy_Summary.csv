@@ -1,0 +1,2 @@
+﻿n_cases,unique_dominant_agents,mean_normalized_entropy,median_normalized_entropy,std_normalized_entropy,min_normalized_entropy,q25_normalized_entropy,q75_normalized_entropy,max_normalized_entropy,mean_dominant_weight,mean_top_minus_second_margin
+1000,4,0.9335801671359172,0.9344051484889888,0.0058602323358677355,0.8834995485513779,0.9328714439467358,0.9358753962088112,0.9515457189832411,0.22968798980316976,0.0125039999212269

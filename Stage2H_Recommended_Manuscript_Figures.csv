@@ -1,0 +1,4 @@
+﻿figure_id,proposed_title,source_files,main_message,reviewer_issue_addressed
+Figure 11,Clinical ROC and precision–recall operating-point curves,Stage2E_Exact_ROC_Operating_Points.png; Stage2E_Exact_PR_Operating_Points.png,Learned SACU fusion has clinically interpretable threshold-dependent behavior.,ROC/PR curves and decision-threshold transparency
+Figure 12,Bootstrap confidence intervals for ROC-AUC and balanced accuracy,Stage2G_ROCAUC_CI_Bar.png; Stage2G_BalancedAccuracy_CI_Bar.png,Uncertainty ranges show SACU is statistically comparable to the strongest baseline and stronger than weaker agents.,Confidence intervals and statistical uncertainty
+Figure 13,Organizational role contribution analysis,Stage2F_Ablation_BalancedAccuracy_Bar.png; Stage2F_Role_Contribution_Loss_Bar.png,Bilateral and local-regional roles provide the clearest positive marginal contributions.,Ablation and organizational role contribution

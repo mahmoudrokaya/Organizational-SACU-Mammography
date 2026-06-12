@@ -1,0 +1,9 @@
+﻿evidence_topic,main_result,supporting_result,source_stage,recommended_use,claim_strength
+Primary SACU discrimination,ROC-AUC = 0.7161 (0.6571–0.7784),Balanced accuracy = 0.6762 (0.6290–0.7256),Stage2G,Main Results / Statistical validation,Supported with bootstrap CI
+Baseline comparison,Baseline ROC-AUC = 0.7245 (0.6648–0.7790),Baseline balanced accuracy = 0.6102 (0.5714–0.6543),Stage2G,Fair comparison paragraph,Do not claim significant ROC-AUC superiority over baseline
+Paired SACU vs GradientBoosting ROC-AUC comparison,"ΔROC-AUC = -0.0084, 95% CI -0.0436–0.0283",bootstrap p = 0.625,Stage2G,Reviewer response on statistical testing,Difference not statistically significant
+Clinical operating-point optimization,Youden threshold = 0.5555; balanced accuracy = 0.6856,Default balanced accuracy = 0.6762; specificity improved from 0.9148 to 0.9336,Stage2E,Clinical threshold paragraph / Table,Supported as post-hoc operating-point analysis
+High-sensitivity operating point,Sensitivity = 0.9062 at threshold 0.1807,Specificity = 0.2246; NPV = 0.9575,Stage2E,Supplementary clinical deployment analysis,Useful but specificity trade-off must be stated
+Individual organizational agents,LocalRegionalAgent ROC-AUC=0.7053; BilateralAgent ROC-AUC=0.7039,Individual agents did not exceed learned SACU fusion in balanced accuracy.,Stage2F,Ablation / organizational role contribution,Supports value of fusion over isolated agents
+Largest positive role contribution,Removing BilateralAgent caused ΔROC-AUC loss = 0.0309,ΔAP = 0.0290; ΔF1 = 0.0339,Stage2F,Role-contribution table,Use cautiously as equal-weight leave-one-out evidence
+Statistically supported SACU superiority over weaker agents,"Primary SACU significantly exceeded: MultiViewAgent, TemporalSpatialAgent, MetadataAgent, AdaptiveControlAgent","Bootstrap paired comparisons used 2,000 resamples.",Stage2G,Statistical comparison paragraph,Supported for listed agents only

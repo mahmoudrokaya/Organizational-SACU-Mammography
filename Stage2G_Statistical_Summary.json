@@ -1,0 +1,629 @@
+{
+    "generated": "2026-06-11 06:23:06.368642",
+    "n_samples": 1000,
+    "positives": 96,
+    "negatives": 904,
+    "primary_model": "SACU_LearnedShallowMetaFusion",
+    "roc_auc_ci_ranking": [
+        {
+            "model": "Baseline_GradientBoosting",
+            "metric": "roc_auc",
+            "point_estimate": 0.7244826235250738,
+            "ci_lower_95": 0.6648137777576412,
+            "ci_upper_95": 0.7790281830211245,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "metric": "roc_auc",
+            "point_estimate": 0.7161112647492625,
+            "ci_lower_95": 0.6571445486300969,
+            "ci_upper_95": 0.7784165670640976,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5
+        },
+        {
+            "model": "SACU_FixedEqualWeightFusion",
+            "metric": "roc_auc",
+            "point_estimate": 0.7122050147492626,
+            "ci_lower_95": 0.6536298650615324,
+            "ci_upper_95": 0.7726075513153685,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5
+        },
+        {
+            "model": "SACU_AdaptiveWeightFusion",
+            "metric": "roc_auc",
+            "point_estimate": 0.7108568399705014,
+            "ci_lower_95": 0.6513832212569064,
+            "ci_upper_95": 0.7725136481196013,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5
+        },
+        {
+            "model": "LocalRegionalAgent",
+            "metric": "roc_auc",
+            "point_estimate": 0.7052624907817109,
+            "ci_lower_95": 0.6403722235984413,
+            "ci_upper_95": 0.7646878709611208,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5
+        },
+        {
+            "model": "BilateralAgent",
+            "metric": "roc_auc",
+            "point_estimate": 0.7039085545722714,
+            "ci_lower_95": 0.6387759593978982,
+            "ci_upper_95": 0.7676211803020562,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5
+        },
+        {
+            "model": "TemporalSpatialAgent",
+            "metric": "roc_auc",
+            "point_estimate": 0.6576730733775811,
+            "ci_lower_95": 0.5916000735011041,
+            "ci_upper_95": 0.7235972555319244,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5
+        },
+        {
+            "model": "MultiViewAgent",
+            "metric": "roc_auc",
+            "point_estimate": 0.6509437223451328,
+            "ci_lower_95": 0.5888677464677973,
+            "ci_upper_95": 0.7114914688595041,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5
+        },
+        {
+            "model": "AdaptiveControlAgent",
+            "metric": "roc_auc",
+            "point_estimate": 0.5811382282448377,
+            "ci_lower_95": 0.5152686776919451,
+            "ci_upper_95": 0.6484538854342659,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5
+        },
+        {
+            "model": "MetadataAgent",
+            "metric": "roc_auc",
+            "point_estimate": 0.551288255899705,
+            "ci_lower_95": 0.5126080224655313,
+            "ci_upper_95": 0.5900056683929082,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5
+        }
+    ],
+    "pairwise_roc_auc_primary_comparisons": [
+        {
+            "primary_model": "SACU_LearnedShallowMetaFusion",
+            "comparison_model": "MetadataAgent",
+            "metric": "roc_auc",
+            "primary_point": 0.7161112647492625,
+            "comparison_point": 0.551288255899705,
+            "point_difference_primary_minus_comparison": 0.16482300884955747,
+            "ci_lower_95_difference": 0.09728069802782326,
+            "ci_upper_95_difference": 0.23157070773841007,
+            "bootstrap_p_two_sided": 0.0,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5,
+            "interpretation": "primary_higher"
+        },
+        {
+            "primary_model": "SACU_LearnedShallowMetaFusion",
+            "comparison_model": "AdaptiveControlAgent",
+            "metric": "roc_auc",
+            "primary_point": 0.7161112647492625,
+            "comparison_point": 0.5811382282448377,
+            "point_difference_primary_minus_comparison": 0.13497303650442471,
+            "ci_lower_95_difference": 0.06188105132992687,
+            "ci_upper_95_difference": 0.2148958436727995,
+            "bootstrap_p_two_sided": 0.001,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5,
+            "interpretation": "primary_higher"
+        },
+        {
+            "primary_model": "SACU_LearnedShallowMetaFusion",
+            "comparison_model": "MultiViewAgent",
+            "metric": "roc_auc",
+            "primary_point": 0.7161112647492625,
+            "comparison_point": 0.6509437223451328,
+            "point_difference_primary_minus_comparison": 0.0651675424041297,
+            "ci_lower_95_difference": 0.02500452745368165,
+            "ci_upper_95_difference": 0.10970388928411821,
+            "bootstrap_p_two_sided": 0.002,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5,
+            "interpretation": "primary_higher"
+        },
+        {
+            "primary_model": "SACU_LearnedShallowMetaFusion",
+            "comparison_model": "TemporalSpatialAgent",
+            "metric": "roc_auc",
+            "primary_point": 0.7161112647492625,
+            "comparison_point": 0.6576730733775811,
+            "point_difference_primary_minus_comparison": 0.05843819137168138,
+            "ci_lower_95_difference": 0.02201541897390154,
+            "ci_upper_95_difference": 0.09935532084168329,
+            "bootstrap_p_two_sided": 0.001,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5,
+            "interpretation": "primary_higher"
+        },
+        {
+            "primary_model": "SACU_LearnedShallowMetaFusion",
+            "comparison_model": "BilateralAgent",
+            "metric": "roc_auc",
+            "primary_point": 0.7161112647492625,
+            "comparison_point": 0.7039085545722714,
+            "point_difference_primary_minus_comparison": 0.012202710176991038,
+            "ci_lower_95_difference": -0.03330167612961287,
+            "ci_upper_95_difference": 0.05824080991741991,
+            "bootstrap_p_two_sided": 0.648,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5,
+            "interpretation": "primary_higher"
+        },
+        {
+            "primary_model": "SACU_LearnedShallowMetaFusion",
+            "comparison_model": "LocalRegionalAgent",
+            "metric": "roc_auc",
+            "primary_point": 0.7161112647492625,
+            "comparison_point": 0.7052624907817109,
+            "point_difference_primary_minus_comparison": 0.010848773967551573,
+            "ci_lower_95_difference": -0.028036490409856316,
+            "ci_upper_95_difference": 0.05531580289737682,
+            "bootstrap_p_two_sided": 0.605,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5,
+            "interpretation": "primary_higher"
+        },
+        {
+            "primary_model": "SACU_LearnedShallowMetaFusion",
+            "comparison_model": "SACU_AdaptiveWeightFusion",
+            "metric": "roc_auc",
+            "primary_point": 0.7161112647492625,
+            "comparison_point": 0.7108568399705014,
+            "point_difference_primary_minus_comparison": 0.005254424778761035,
+            "ci_lower_95_difference": -0.002548013021557177,
+            "ci_upper_95_difference": 0.013735544348834396,
+            "bootstrap_p_two_sided": 0.177,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5,
+            "interpretation": "primary_higher"
+        },
+        {
+            "primary_model": "SACU_LearnedShallowMetaFusion",
+            "comparison_model": "SACU_FixedEqualWeightFusion",
+            "metric": "roc_auc",
+            "primary_point": 0.7161112647492625,
+            "comparison_point": 0.7122050147492626,
+            "point_difference_primary_minus_comparison": 0.003906249999999889,
+            "ci_lower_95_difference": -0.009245211779623633,
+            "ci_upper_95_difference": 0.018232102330781177,
+            "bootstrap_p_two_sided": 0.575,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5,
+            "interpretation": "primary_higher"
+        },
+        {
+            "primary_model": "SACU_LearnedShallowMetaFusion",
+            "comparison_model": "Baseline_GradientBoosting",
+            "metric": "roc_auc",
+            "primary_point": 0.7161112647492625,
+            "comparison_point": 0.7244826235250738,
+            "point_difference_primary_minus_comparison": -0.0083713587758113,
+            "ci_lower_95_difference": -0.04357070149551031,
+            "ci_upper_95_difference": 0.028323808703830146,
+            "bootstrap_p_two_sided": 0.625,
+            "n_bootstrap_valid": 2000,
+            "threshold": 0.5,
+            "interpretation": "comparison_higher_or_equal"
+        }
+    ],
+    "primary_operating_point_ci": [
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Default_0.50",
+            "threshold": 0.5,
+            "metric": "roc_auc",
+            "point_estimate": 0.7161112647492625,
+            "ci_lower_95": 0.6533696723044403,
+            "ci_upper_95": 0.7757829187716757,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Default_0.50",
+            "threshold": 0.5,
+            "metric": "average_precision",
+            "point_estimate": 0.39877184079463673,
+            "ci_lower_95": 0.30415458492156117,
+            "ci_upper_95": 0.4935260269072916,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Default_0.50",
+            "threshold": 0.5,
+            "metric": "accuracy",
+            "point_estimate": 0.869,
+            "ci_lower_95": 0.848,
+            "ci_upper_95": 0.889,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Default_0.50",
+            "threshold": 0.5,
+            "metric": "balanced_accuracy",
+            "point_estimate": 0.6761615044247787,
+            "ci_lower_95": 0.6266649736644093,
+            "ci_upper_95": 0.7258868730567756,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Default_0.50",
+            "threshold": 0.5,
+            "metric": "sensitivity_recall",
+            "point_estimate": 0.4375,
+            "ci_lower_95": 0.3406480117820324,
+            "ci_upper_95": 0.5375240384615383,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Default_0.50",
+            "threshold": 0.5,
+            "metric": "specificity",
+            "point_estimate": 0.9148230088495575,
+            "ci_lower_95": 0.8962814468446882,
+            "ci_upper_95": 0.9316458923757304,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Default_0.50",
+            "threshold": 0.5,
+            "metric": "precision_ppv",
+            "point_estimate": 0.35294117647058826,
+            "ci_lower_95": 0.2685128726287263,
+            "ci_upper_95": 0.437511405109489,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Default_0.50",
+            "threshold": 0.5,
+            "metric": "npv",
+            "point_estimate": 0.9387060158910329,
+            "ci_lower_95": 0.9229024290959191,
+            "ci_upper_95": 0.9542347172278522,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Default_0.50",
+            "threshold": 0.5,
+            "metric": "f1",
+            "point_estimate": 0.39069767441860465,
+            "ci_lower_95": 0.30414746543778803,
+            "ci_upper_95": 0.4672897196261682,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Default_0.50",
+            "threshold": 0.5,
+            "metric": "mcc",
+            "point_estimate": 0.32055267326193376,
+            "ci_lower_95": 0.22955663349351305,
+            "ci_upper_95": 0.4055820255831617,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Youden",
+            "threshold": 0.5555196054279777,
+            "metric": "roc_auc",
+            "point_estimate": 0.7161112647492625,
+            "ci_lower_95": 0.6533696723044403,
+            "ci_upper_95": 0.7757829187716757,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Youden",
+            "threshold": 0.5555196054279777,
+            "metric": "average_precision",
+            "point_estimate": 0.39877184079463673,
+            "ci_lower_95": 0.30415458492156117,
+            "ci_upper_95": 0.4935260269072916,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Youden",
+            "threshold": 0.5555196054279777,
+            "metric": "accuracy",
+            "point_estimate": 0.886,
+            "ci_lower_95": 0.865,
+            "ci_upper_95": 0.905,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Youden",
+            "threshold": 0.5555196054279777,
+            "metric": "balanced_accuracy",
+            "point_estimate": 0.6855641592920354,
+            "ci_lower_95": 0.6367547027840482,
+            "ci_upper_95": 0.7357505199030033,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Youden",
+            "threshold": 0.5555196054279777,
+            "metric": "sensitivity_recall",
+            "point_estimate": 0.4375,
+            "ci_lower_95": 0.3406480117820324,
+            "ci_upper_95": 0.5375240384615383,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Youden",
+            "threshold": 0.5555196054279777,
+            "metric": "specificity",
+            "point_estimate": 0.9336283185840708,
+            "ci_lower_95": 0.9157519389671478,
+            "ci_upper_95": 0.9481250501982373,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Youden",
+            "threshold": 0.5555196054279777,
+            "metric": "precision_ppv",
+            "point_estimate": 0.4117647058823529,
+            "ci_lower_95": 0.3131155303030303,
+            "ci_upper_95": 0.5,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Youden",
+            "threshold": 0.5555196054279777,
+            "metric": "npv",
+            "point_estimate": 0.9398663697104677,
+            "ci_lower_95": 0.9244238291149411,
+            "ci_upper_95": 0.9551066217732884,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Youden",
+            "threshold": 0.5555196054279777,
+            "metric": "f1",
+            "point_estimate": 0.42424242424242425,
+            "ci_lower_95": 0.33513239127452327,
+            "ci_upper_95": 0.5023266835666262,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "Youden",
+            "threshold": 0.5555196054279777,
+            "metric": "mcc",
+            "point_estimate": 0.36124818317421586,
+            "ci_lower_95": 0.2673612069964129,
+            "ci_upper_95": 0.4463195969122452,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSensitivity_0.90",
+            "threshold": 0.1807155516602614,
+            "metric": "roc_auc",
+            "point_estimate": 0.7161112647492625,
+            "ci_lower_95": 0.6533696723044403,
+            "ci_upper_95": 0.7757829187716757,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSensitivity_0.90",
+            "threshold": 0.1807155516602614,
+            "metric": "average_precision",
+            "point_estimate": 0.39877184079463673,
+            "ci_lower_95": 0.30415458492156117,
+            "ci_upper_95": 0.4935260269072916,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSensitivity_0.90",
+            "threshold": 0.1807155516602614,
+            "metric": "accuracy",
+            "point_estimate": 0.29,
+            "ci_lower_95": 0.263,
+            "ci_upper_95": 0.318,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSensitivity_0.90",
+            "threshold": 0.1807155516602614,
+            "metric": "balanced_accuracy",
+            "point_estimate": 0.5654037610619469,
+            "ci_lower_95": 0.5320631645861589,
+            "ci_upper_95": 0.5967829231319977,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSensitivity_0.90",
+            "threshold": 0.1807155516602614,
+            "metric": "sensitivity_recall",
+            "point_estimate": 0.90625,
+            "ci_lower_95": 0.8470558223289316,
+            "ci_upper_95": 0.9603992965085981,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSensitivity_0.90",
+            "threshold": 0.1807155516602614,
+            "metric": "specificity",
+            "point_estimate": 0.2245575221238938,
+            "ci_lower_95": 0.19800857270123146,
+            "ci_upper_95": 0.25222814207650274,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSensitivity_0.90",
+            "threshold": 0.1807155516602614,
+            "metric": "precision_ppv",
+            "point_estimate": 0.11040609137055837,
+            "ci_lower_95": 0.08883042512690356,
+            "ci_upper_95": 0.13256343077771648,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSensitivity_0.90",
+            "threshold": 0.1807155516602614,
+            "metric": "npv",
+            "point_estimate": 0.9575471698113207,
+            "ci_lower_95": 0.9302300192952168,
+            "ci_upper_95": 0.9819860038610038,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSensitivity_0.90",
+            "threshold": 0.1807155516602614,
+            "metric": "f1",
+            "point_estimate": 0.19683257918552036,
+            "ci_lower_95": 0.16154362014250642,
+            "ci_upper_95": 0.23178969384314033,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSensitivity_0.90",
+            "threshold": 0.1807155516602614,
+            "metric": "mcc",
+            "point_estimate": 0.09428042063673342,
+            "ci_lower_95": 0.04603428031625446,
+            "ci_upper_95": 0.13946934321059498,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSpecificity_0.90",
+            "threshold": 0.5555196054279777,
+            "metric": "roc_auc",
+            "point_estimate": 0.7161112647492625,
+            "ci_lower_95": 0.6533696723044403,
+            "ci_upper_95": 0.7757829187716757,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSpecificity_0.90",
+            "threshold": 0.5555196054279777,
+            "metric": "average_precision",
+            "point_estimate": 0.39877184079463673,
+            "ci_lower_95": 0.30415458492156117,
+            "ci_upper_95": 0.4935260269072916,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSpecificity_0.90",
+            "threshold": 0.5555196054279777,
+            "metric": "accuracy",
+            "point_estimate": 0.886,
+            "ci_lower_95": 0.865,
+            "ci_upper_95": 0.905,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSpecificity_0.90",
+            "threshold": 0.5555196054279777,
+            "metric": "balanced_accuracy",
+            "point_estimate": 0.6855641592920354,
+            "ci_lower_95": 0.6367547027840482,
+            "ci_upper_95": 0.7357505199030033,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSpecificity_0.90",
+            "threshold": 0.5555196054279777,
+            "metric": "sensitivity_recall",
+            "point_estimate": 0.4375,
+            "ci_lower_95": 0.3406480117820324,
+            "ci_upper_95": 0.5375240384615383,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSpecificity_0.90",
+            "threshold": 0.5555196054279777,
+            "metric": "specificity",
+            "point_estimate": 0.9336283185840708,
+            "ci_lower_95": 0.9157519389671478,
+            "ci_upper_95": 0.9481250501982373,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSpecificity_0.90",
+            "threshold": 0.5555196054279777,
+            "metric": "precision_ppv",
+            "point_estimate": 0.4117647058823529,
+            "ci_lower_95": 0.3131155303030303,
+            "ci_upper_95": 0.5,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSpecificity_0.90",
+            "threshold": 0.5555196054279777,
+            "metric": "npv",
+            "point_estimate": 0.9398663697104677,
+            "ci_lower_95": 0.9244238291149411,
+            "ci_upper_95": 0.9551066217732884,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSpecificity_0.90",
+            "threshold": 0.5555196054279777,
+            "metric": "f1",
+            "point_estimate": 0.42424242424242425,
+            "ci_lower_95": 0.33513239127452327,
+            "ci_upper_95": 0.5023266835666262,
+            "n_bootstrap_valid": 2000
+        },
+        {
+            "model": "SACU_LearnedShallowMetaFusion",
+            "operating_point": "HighSpecificity_0.90",
+            "threshold": 0.5555196054279777,
+            "metric": "mcc",
+            "point_estimate": 0.36124818317421586,
+            "ci_lower_95": 0.2673612069964129,
+            "ci_upper_95": 0.4463195969122452,
+            "n_bootstrap_valid": 2000
+        }
+    ]
+}

@@ -1,0 +1,249 @@
+{
+    "generated": "2026-06-11 21:48:59.142408",
+    "prediction_input": "D:\\47\\472\\New-Papers\\Frontires_Atlam2-2026\\Experiments\\results\\tables\\Stage2D2B_Stage2E_Ready_Clean_Predictions.csv",
+    "adaptive_weight_input": "D:\\47\\472\\New-Papers\\Frontires_Atlam2-2026\\Experiments\\results\\tables\\Stage2D_Adaptive_Weights.csv",
+    "reference_condition": "LearnedSACUMetaFusion",
+    "agents": [
+        "LocalRegionalAgent",
+        "MultiViewAgent",
+        "BilateralAgent",
+        "TemporalSpatialAgent",
+        "MetadataAgent",
+        "AdaptiveControlAgent"
+    ],
+    "pathway_map": {
+        "LocalRegionalAgent": "Local-Regional",
+        "MultiViewAgent": "Multi-View",
+        "BilateralAgent": "Bilateral",
+        "TemporalSpatialAgent": "Temporal-Spatial",
+        "MetadataAgent": "Metadata",
+        "AdaptiveControlAgent": "Adaptive-Control"
+    },
+    "n_cases": 1000,
+    "positives": 96,
+    "negatives": 904,
+    "performance": [
+        {
+            "condition": "LearnedSACUMetaFusion",
+            "n": 1000,
+            "positives": 96,
+            "negatives": 904,
+            "threshold": 0.5,
+            "accuracy": 0.869,
+            "balanced_accuracy": 0.6761615044247787,
+            "sensitivity_recall": 0.4375,
+            "specificity": 0.9148230088495575,
+            "precision_ppv": 0.35294117647058826,
+            "npv": 0.9387060158910329,
+            "f1": 0.39069767441860465,
+            "mcc": 0.32055267326193376,
+            "roc_auc": 0.7161112647492625,
+            "average_precision": 0.39877184079463673
+        },
+        {
+            "condition": "StaticGlobalWeightFusion",
+            "n": 1000,
+            "positives": 96,
+            "negatives": 904,
+            "threshold": 0.5,
+            "accuracy": 0.915,
+            "balanced_accuracy": 0.5619469026548672,
+            "sensitivity_recall": 0.125,
+            "specificity": 0.9988938053097345,
+            "precision_ppv": 0.9230769230769231,
+            "npv": 0.9148936170212766,
+            "f1": 0.22018348623853212,
+            "mcc": 0.322210116151277,
+            "roc_auc": 0.7125622234513276,
+            "average_precision": 0.39277815587075443
+        },
+        {
+            "condition": "FixedEqualWeightFusion",
+            "n": 1000,
+            "positives": 96,
+            "negatives": 904,
+            "threshold": 0.5,
+            "accuracy": 0.912,
+            "balanced_accuracy": 0.5463219026548672,
+            "sensitivity_recall": 0.09375,
+            "specificity": 0.9988938053097345,
+            "precision_ppv": 0.9,
+            "npv": 0.9121212121212121,
+            "f1": 0.16981132075471697,
+            "mcc": 0.2742954601586821,
+            "roc_auc": 0.7122050147492626,
+            "average_precision": 0.3862538223281692
+        },
+        {
+            "condition": "AdaptiveWeightFusion",
+            "n": 1000,
+            "positives": 96,
+            "negatives": 904,
+            "threshold": 0.5,
+            "accuracy": 0.915,
+            "balanced_accuracy": 0.5619469026548672,
+            "sensitivity_recall": 0.125,
+            "specificity": 0.9988938053097345,
+            "precision_ppv": 0.9230769230769231,
+            "npv": 0.9148936170212766,
+            "f1": 0.22018348623853212,
+            "mcc": 0.322210116151277,
+            "roc_auc": 0.7108568399705014,
+            "average_precision": 0.3866556402713886
+        },
+        {
+            "condition": "Top4_AdaptiveFusion",
+            "n": 1000,
+            "positives": 96,
+            "negatives": 904,
+            "threshold": 0.5,
+            "accuracy": 0.915,
+            "balanced_accuracy": 0.5619469026548672,
+            "sensitivity_recall": 0.125,
+            "specificity": 0.9988938053097345,
+            "precision_ppv": 0.9230769230769231,
+            "npv": 0.9148936170212766,
+            "f1": 0.22018348623853212,
+            "mcc": 0.322210116151277,
+            "roc_auc": 0.701431139380531,
+            "average_precision": 0.37048592991452545
+        },
+        {
+            "condition": "Top3_AdaptiveFusion",
+            "n": 1000,
+            "positives": 96,
+            "negatives": 904,
+            "threshold": 0.5,
+            "accuracy": 0.914,
+            "balanced_accuracy": 0.5613938053097345,
+            "sensitivity_recall": 0.125,
+            "specificity": 0.9977876106194691,
+            "precision_ppv": 0.8571428571428571,
+            "npv": 0.9148073022312373,
+            "f1": 0.21818181818181817,
+            "mcc": 0.3078732134935798,
+            "roc_auc": 0.6854834992625369,
+            "average_precision": 0.366434546170431
+        },
+        {
+            "condition": "Top2_AdaptiveFusion",
+            "n": 1000,
+            "positives": 96,
+            "negatives": 904,
+            "threshold": 0.5,
+            "accuracy": 0.916,
+            "balanced_accuracy": 0.5671552359882006,
+            "sensitivity_recall": 0.13541666666666666,
+            "specificity": 0.9988938053097345,
+            "precision_ppv": 0.9285714285714286,
+            "npv": 0.9158215010141988,
+            "f1": 0.23636363636363636,
+            "mcc": 0.3367652192643737,
+            "roc_auc": 0.6748018067846608,
+            "average_precision": 0.3674002852754561
+        },
+        {
+            "condition": "DominantPathwayOnly",
+            "n": 1000,
+            "positives": 96,
+            "negatives": 904,
+            "threshold": 0.5,
+            "accuracy": 0.915,
+            "balanced_accuracy": 0.5619469026548672,
+            "sensitivity_recall": 0.125,
+            "specificity": 0.9988938053097345,
+            "precision_ppv": 0.9230769230769231,
+            "npv": 0.9148936170212766,
+            "f1": 0.22018348623853212,
+            "mcc": 0.322210116151277,
+            "roc_auc": 0.6362635969764012,
+            "average_precision": 0.3247401275422161
+        },
+        {
+            "condition": "Top1_AdaptiveFusion",
+            "n": 1000,
+            "positives": 96,
+            "negatives": 904,
+            "threshold": 0.5,
+            "accuracy": 0.915,
+            "balanced_accuracy": 0.5619469026548672,
+            "sensitivity_recall": 0.125,
+            "specificity": 0.9988938053097345,
+            "precision_ppv": 0.9230769230769231,
+            "npv": 0.9148936170212766,
+            "f1": 0.22018348623853212,
+            "mcc": 0.322210116151277,
+            "roc_auc": 0.6362635969764012,
+            "average_precision": 0.3247401275422161
+        }
+    ],
+    "entropy_summary": [
+        {
+            "n_cases": 1000,
+            "unique_dominant_agents": 4,
+            "mean_normalized_entropy": 0.9335801671359172,
+            "median_normalized_entropy": 0.9344051484889888,
+            "std_normalized_entropy": 0.0058602323358677355,
+            "min_normalized_entropy": 0.8834995485513779,
+            "q25_normalized_entropy": 0.9328714439467358,
+            "q75_normalized_entropy": 0.9358753962088112,
+            "max_normalized_entropy": 0.9515457189832411,
+            "mean_dominant_weight": 0.22968798980316976,
+            "mean_top_minus_second_margin": 0.0125039999212269
+        }
+    ],
+    "dominant_counts": [
+        {
+            "dominant_agent": "TemporalSpatialAgent",
+            "n_cases": 890,
+            "case_fraction": 0.89,
+            "dominant_pathway": "Temporal-Spatial"
+        },
+        {
+            "dominant_agent": "BilateralAgent",
+            "n_cases": 72,
+            "case_fraction": 0.072,
+            "dominant_pathway": "Bilateral"
+        },
+        {
+            "dominant_agent": "MultiViewAgent",
+            "n_cases": 33,
+            "case_fraction": 0.033,
+            "dominant_pathway": "Multi-View"
+        },
+        {
+            "dominant_agent": "LocalRegionalAgent",
+            "n_cases": 5,
+            "case_fraction": 0.005,
+            "dominant_pathway": "Local-Regional"
+        }
+    ],
+    "reviewer_evidence": [
+        {
+            "reviewer_question": "Does the adaptive coordination mechanism change across cases?",
+            "quantitative_evidence": "Dominant pathway varied across 4 agents; mean normalized weight entropy = 0.9336.",
+            "safe_interpretation": "The active influence distribution is case-dependent, even when the nominal agent set remains constant."
+        },
+        {
+            "reviewer_question": "What is the evidence of case-level variability?",
+            "quantitative_evidence": "TemporalSpatialAgent=890 (89.0%); BilateralAgent=72 (7.2%); MultiViewAgent=33 (3.3%); LocalRegionalAgent=5 (0.5%)",
+            "safe_interpretation": "Different pathways dominate different examinations, showing case-level adaptive redistribution."
+        },
+        {
+            "reviewer_question": "Does dynamic weighting outperform fixed equal weighting?",
+            "quantitative_evidence": "AdaptiveWeightFusion ROC-AUC=0.7109, balanced accuracy=0.5619; FixedEqualWeightFusion ROC-AUC=0.7122, balanced accuracy=0.5463.",
+            "safe_interpretation": "This directly tests dynamic case-level weights against a fixed equal-weight coordinator."
+        },
+        {
+            "reviewer_question": "Does dynamic weighting outperform static global weighting?",
+            "quantitative_evidence": "AdaptiveWeightFusion ROC-AUC=0.7109; StaticGlobalWeightFusion ROC-AUC=0.7126.",
+            "safe_interpretation": "This tests whether using a case-specific weight vector differs from using one global weight vector."
+        },
+        {
+            "reviewer_question": "How should the word adaptive be interpreted?",
+            "quantitative_evidence": "The nominal set of available agents may remain fixed, but their influence weights and dominant pathway vary by case.",
+            "safe_interpretation": "Adaptivity refers to case-level influence redistribution and resource-limited pathway selection, not necessarily creation of new agents during inference."
+        }
+    ],
+    "safe_interpretation": "Adaptivity is validated as case-level influence redistribution and resource-limited pathway selection. It should not be described as physical creation of new agents during inference unless implemented explicitly."
+}

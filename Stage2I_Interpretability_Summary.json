@@ -1,0 +1,163 @@
+{
+    "generated": "2026-06-11 20:01:58.869386",
+    "prediction_input": "D:\\47\\472\\New-Papers\\Frontires_Atlam2-2026\\Experiments\\results\\tables\\Stage2D2B_Stage2E_Ready_Clean_Predictions.csv",
+    "adaptive_weight_source": "Stage2D_Adaptive_Weights",
+    "primary_model": "SACU_LearnedShallowMetaFusion",
+    "agents": [
+        "LocalRegionalAgent",
+        "MultiViewAgent",
+        "BilateralAgent",
+        "TemporalSpatialAgent",
+        "MetadataAgent",
+        "AdaptiveControlAgent"
+    ],
+    "pathway_map": {
+        "LocalRegionalAgent": "local_regional_tissue_pattern",
+        "MultiViewAgent": "multi_view_correlation",
+        "BilateralAgent": "bilateral_asymmetry",
+        "TemporalSpatialAgent": "temporal_spatial_progression",
+        "MetadataAgent": "clinical_metadata_context",
+        "AdaptiveControlAgent": "adaptive_control_context"
+    },
+    "top_mean_weight_agent": {
+        "agent": "TemporalSpatialAgent",
+        "clinical_pathway": "temporal_spatial_progression",
+        "clinical_interpretation": "temporal-spatial progression and longitudinal change evidence",
+        "mean_adaptive_weight": 0.22596468239780484,
+        "median_adaptive_weight": 0.22591923171140788,
+        "std_adaptive_weight": 0.015155547476109421,
+        "dominant_case_count": 890,
+        "dominant_case_fraction": 0.89,
+        "agent_roc_auc": 0.6576730733775811,
+        "agent_average_precision": 0.344459897159312,
+        "agent_balanced_accuracy": 0.5567385693215339,
+        "agent_sensitivity": 0.11458333333333333,
+        "agent_specificity": 0.9988938053097345,
+        "agent_f1": 0.2037037037037037,
+        "agent_mcc": 0.30701465946530443,
+        "leave_one_out_delta_roc_auc": -0.0051507190265486,
+        "leave_one_out_delta_average_precision": 0.0045787202530594,
+        "leave_one_out_delta_f1": 0.0174303683737645,
+        "primary_minus_agent_roc_auc_delta": 0.0584381913716813,
+        "primary_vs_agent_bootstrap_p": 0.001,
+        "interpretability_role": "supporting_or_contextual_contributor"
+    },
+    "top_individual_auc_agent": {
+        "agent": "LocalRegionalAgent",
+        "clinical_pathway": "local_regional_tissue_pattern",
+        "clinical_interpretation": "localized tissue-density and regional pattern evidence",
+        "mean_adaptive_weight": 0.19813539411478945,
+        "median_adaptive_weight": 0.20103173816365577,
+        "std_adaptive_weight": 0.015390423858094207,
+        "dominant_case_count": 5,
+        "dominant_case_fraction": 0.005,
+        "agent_roc_auc": 0.7052624907817109,
+        "agent_average_precision": 0.3640580020804187,
+        "agent_balanced_accuracy": 0.591537610619469,
+        "agent_sensitivity": 0.1875,
+        "agent_specificity": 0.995575221238938,
+        "agent_f1": 0.3050847457627119,
+        "agent_mcc": 0.36767883555197706,
+        "leave_one_out_delta_roc_auc": 0.0081351401179941,
+        "leave_one_out_delta_average_precision": 0.0052477401800186,
+        "leave_one_out_delta_f1": 0.0521642619311875,
+        "primary_minus_agent_roc_auc_delta": 0.0108487739675515,
+        "primary_vs_agent_bootstrap_p": 0.605,
+        "interpretability_role": "supporting_or_contextual_contributor"
+    },
+    "dominant_pathway_distribution": [
+        {
+            "dominant_agent": "TemporalSpatialAgent",
+            "clinical_pathway": "temporal_spatial_progression",
+            "n_cases": 890,
+            "case_fraction": 0.89,
+            "accuracy_when_dominant": 0.898876404494382,
+            "positive_fraction_when_dominant": 0.08089887640449438,
+            "mean_primary_score_when_dominant": 0.2673962940827504,
+            "mean_dominant_weight": 0.2284314964481217
+        },
+        {
+            "dominant_agent": "BilateralAgent",
+            "clinical_pathway": "bilateral_asymmetry",
+            "n_cases": 72,
+            "case_fraction": 0.072,
+            "accuracy_when_dominant": 0.625,
+            "positive_fraction_when_dominant": 0.2222222222222222,
+            "mean_primary_score_when_dominant": 0.596424990049358,
+            "mean_dominant_weight": 0.23979690608397863
+        },
+        {
+            "dominant_agent": "MultiViewAgent",
+            "clinical_pathway": "multi_view_correlation",
+            "n_cases": 33,
+            "case_fraction": 0.033,
+            "accuracy_when_dominant": 0.696969696969697,
+            "positive_fraction_when_dominant": 0.21212121212121213,
+            "mean_primary_score_when_dominant": 0.5758300011696349,
+            "mean_dominant_weight": 0.24207441788156484
+        },
+        {
+            "dominant_agent": "LocalRegionalAgent",
+            "clinical_pathway": "local_regional_tissue_pattern",
+            "n_cases": 5,
+            "case_fraction": 0.005,
+            "accuracy_when_dominant": 0.2,
+            "positive_fraction_when_dominant": 0.2,
+            "mean_primary_score_when_dominant": 0.8881748956794949,
+            "mean_dominant_weight": 0.2260249872406733
+        },
+        {
+            "dominant_agent": "MetadataAgent",
+            "clinical_pathway": "clinical_metadata_context",
+            "n_cases": 0,
+            "case_fraction": 0.0,
+            "accuracy_when_dominant": NaN,
+            "positive_fraction_when_dominant": NaN,
+            "mean_primary_score_when_dominant": NaN,
+            "mean_dominant_weight": NaN
+        },
+        {
+            "dominant_agent": "AdaptiveControlAgent",
+            "clinical_pathway": "adaptive_control_context",
+            "n_cases": 0,
+            "case_fraction": 0.0,
+            "accuracy_when_dominant": NaN,
+            "positive_fraction_when_dominant": NaN,
+            "mean_primary_score_when_dominant": NaN,
+            "mean_dominant_weight": NaN
+        }
+    ],
+    "evidence_table": [
+        {
+            "interpretability_question": "Which clinical pathway most strongly influenced organizational inference?",
+            "quantitative_evidence": "TemporalSpatialAgent had the highest mean adaptive weight (0.2260).",
+            "clinical_interpretation": "temporal-spatial progression and longitudinal change evidence",
+            "safe_claim": "Adaptive influence weights provide pathway-level explanation of the model decision process."
+        },
+        {
+            "interpretability_question": "Which individual pathway had the strongest standalone discrimination?",
+            "quantitative_evidence": "LocalRegionalAgent had the highest individual-agent ROC-AUC (0.7053).",
+            "clinical_interpretation": "localized tissue-density and regional pattern evidence",
+            "safe_claim": "Individual pathway performance helps identify which clinical reasoning stream carried the strongest independent signal."
+        },
+        {
+            "interpretability_question": "Which pathway showed the clearest positive marginal contribution?",
+            "quantitative_evidence": "Removing BilateralAgent produced the largest positive ROC-AUC loss (0.0309).",
+            "clinical_interpretation": "left-right breast asymmetry and structural difference evidence",
+            "safe_claim": "Leave-one-role-out evidence supports a measurable contribution for this pathway in the equal-weight fusion setting."
+        },
+        {
+            "interpretability_question": "Which pathway was most frequently dominant at the case level?",
+            "quantitative_evidence": "TemporalSpatialAgent was dominant in 890 cases (0.8900 of test cases).",
+            "clinical_interpretation": "temporal-spatial progression and longitudinal change evidence",
+            "safe_claim": "Case-level dominance provides an interpretable summary of which diagnostic pathway controlled inference most often."
+        },
+        {
+            "interpretability_question": "Does this replace radiologist-annotated saliency validation?",
+            "quantitative_evidence": "No lesion-mask Dice/IoU analysis was performed because the SACU framework is descriptor/pathway-based.",
+            "clinical_interpretation": "Interpretability is provided at the diagnostic-pathway level, not at pixel-level heatmap localization.",
+            "safe_claim": "The manuscript should state this limitation clearly and avoid claiming expert-validated lesion localization."
+        }
+    ],
+    "important_limitation": "This analysis provides organizational/pathway-level interpretability, not pixel-level lesion-mask saliency validation."
+}

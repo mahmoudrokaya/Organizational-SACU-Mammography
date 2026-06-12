@@ -1,0 +1,7 @@
+﻿dominant_agent,clinical_pathway,n_cases,case_fraction,accuracy_when_dominant,positive_fraction_when_dominant,mean_primary_score_when_dominant,mean_dominant_weight
+TemporalSpatialAgent,temporal_spatial_progression,890,0.89,0.898876404494382,0.08089887640449438,0.2673962940827504,0.2284314964481217
+BilateralAgent,bilateral_asymmetry,72,0.072,0.625,0.2222222222222222,0.596424990049358,0.23979690608397863
+MultiViewAgent,multi_view_correlation,33,0.033,0.696969696969697,0.21212121212121213,0.5758300011696349,0.24207441788156484
+LocalRegionalAgent,local_regional_tissue_pattern,5,0.005,0.2,0.2,0.8881748956794949,0.2260249872406733
+MetadataAgent,clinical_metadata_context,0,0.0,,,,
+AdaptiveControlAgent,adaptive_control_context,0,0.0,,,,
