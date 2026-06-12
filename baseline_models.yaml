@@ -1,0 +1,299 @@
+```yaml
+# =============================================================================
+# Organizational-SACU-Mammography
+# Baseline Models Configuration
+# =============================================================================
+
+project:
+  name: Organizational-SACU-Mammography
+  version: 1.0.0
+
+# =============================================================================
+# Input / Output Paths
+# =============================================================================
+
+paths:
+
+  input_train_matrix:
+    data/processed/modeling_matrices/X_train.csv
+
+  input_validation_matrix:
+    data/processed/modeling_matrices/X_validation.csv
+
+  input_test_matrix:
+    data/processed/modeling_matrices/X_test.csv
+
+  output_dir:
+    results/baselines
+
+# =============================================================================
+# Classification Target
+# =============================================================================
+
+target:
+
+  column_name:
+    diagnosis_label
+
+  positive_class:
+    1
+
+  negative_class:
+    0
+
+# =============================================================================
+# General Training Settings
+# =============================================================================
+
+training:
+
+  random_seed: 42
+
+  n_jobs:
+    -1
+
+  class_weight:
+    balanced
+
+  probability_estimates:
+    true
+
+# =============================================================================
+# Baseline Model Suite
+# =============================================================================
+
+models:
+
+  LogisticRegression:
+
+    enabled: true
+
+    solver:
+      liblinear
+
+    max_iter:
+      5000
+
+    C:
+      1.0
+
+    penalty:
+      l2
+
+  RandomForest:
+
+    enabled: true
+
+    n_estimators:
+      500
+
+    max_depth:
+      null
+
+    min_samples_split:
+      2
+
+    min_samples_leaf:
+      1
+
+    bootstrap:
+      true
+
+  ExtraTrees:
+
+    enabled: true
+
+    n_estimators:
+      500
+
+    max_depth:
+      null
+
+    min_samples_split:
+      2
+
+    min_samples_leaf:
+      1
+
+  GradientBoosting:
+
+    enabled: true
+
+    n_estimators:
+      300
+
+    learning_rate:
+      0.05
+
+    max_depth:
+      3
+
+    subsample:
+      0.8
+
+  AdaBoost:
+
+    enabled: true
+
+    n_estimators:
+      300
+
+    learning_rate:
+      0.5
+
+# =============================================================================
+# Feature Scaling
+# =============================================================================
+
+feature_scaling:
+
+  enabled: true
+
+  method:
+    standard
+
+  apply_to:
+    - LogisticRegression
+
+# =============================================================================
+# Hyperparameter Search
+# =============================================================================
+
+hyperparameter_search:
+
+  enabled: false
+
+  strategy:
+    grid_search
+
+  scoring:
+    roc_auc
+
+# =============================================================================
+# Validation Strategy
+# =============================================================================
+
+validation:
+
+  strategy:
+    fixed_validation_split
+
+  preserve_patient_level_partitioning: true
+
+  use_validation_set_for_model_selection: true
+
+# =============================================================================
+# Prediction Export
+# =============================================================================
+
+prediction_export:
+
+  save_validation_predictions: true
+
+  save_test_predictions: true
+
+  save_probability_scores: true
+
+# =============================================================================
+# Evaluation Metrics
+# =============================================================================
+
+metrics:
+
+  primary_metric:
+    roc_auc
+
+  secondary_metrics:
+
+    - accuracy
+    - balanced_accuracy
+    - precision
+    - recall
+    - f1
+    - specificity
+    - mcc
+
+# =============================================================================
+# Threshold Selection
+# =============================================================================
+
+threshold_selection:
+
+  enabled: true
+
+  default_threshold:
+    0.50
+
+  store_optimal_thresholds: true
+
+  optimization_metric:
+    balanced_accuracy
+
+# =============================================================================
+# Statistical Reporting
+# =============================================================================
+
+reporting:
+
+  save_confusion_matrices: true
+
+  save_classification_reports: true
+
+  save_metric_tables: true
+
+  save_roc_curves: true
+
+  save_pr_curves: true
+
+# =============================================================================
+# Output Files
+# =============================================================================
+
+outputs:
+
+  performance_table:
+    results/tables/Stage2C_Baseline_Performance.csv
+
+  prediction_file:
+    results/tables/Stage2C_Baseline_Predictions.csv
+
+  roc_summary:
+    results/tables/Stage2C_Baseline_ROC_Summary.csv
+
+  confusion_matrices:
+    results/tables/Stage2C_Baseline_Confusion_Matrices.csv
+
+# =============================================================================
+# Reproducibility
+# =============================================================================
+
+reproducibility:
+
+  random_seed: 42
+
+  deterministic_execution: true
+
+# =============================================================================
+# Logging
+# =============================================================================
+
+logging:
+
+  level: INFO
+
+  save_log_file: true
+
+  log_file:
+    results/reports/baseline_models.log
+
+# =============================================================================
+# Reports
+# =============================================================================
+
+reports:
+
+  save_summary_report: true
+
+  summary_report:
+    results/reports/Stage2C_Baseline_Models_Report.txt
+```
