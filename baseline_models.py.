@@ -1,0 +1,415 @@
+# src/organizational_sacu_mammography/models/baseline_models.py
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Dict, List, Optional
+
+import numpy as np
+import pandas as pd
+
+from sklearn.base import clone
+from sklearn.ensemble import (
+    RandomForestClassifier,
+    ExtraTreesClassifier,
+    GradientBoostingClassifier,
+)
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    accuracy_score,
+    balanced_accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    roc_auc_score,
+    average_precision_score,
+    matthews_corrcoef,
+)
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+
+
+@dataclass
+class BaselineModelConfig:
+    """
+    Configuration for Stage2C baseline mammography models.
+
+    These baselines mirror the paper design philosophy:
+    conventional shallow learners operating on structured
+    mammography representations.
+    """
+
+    random_seed: int = 42
+
+    train_logistic_regression: bool = True
+    train_random_forest: bool = True
+    train_extra_trees: bool = True
+    train_gradient_boosting: bool = True
+
+    logistic_c: float = 1.0
+    logistic_max_iter: int = 5000
+
+    random_forest_estimators: int = 300
+    random_forest_max_depth: Optional[int] = None
+
+    extra_trees_estimators: int = 300
+    extra_trees_max_depth: Optional[int] = None
+
+    gradient_boosting_estimators: int = 300
+    gradient_boosting_learning_rate: float = 0.05
+    gradient_boosting_max_depth: int = 3
+
+
+def _validate_training_data(
+    X_train: pd.DataFrame | np.ndarray,
+    y_train: pd.Series | np.ndarray,
+) -> None:
+    if len(X_train) == 0:
+        raise ValueError("Training matrix is empty.")
+
+    if len(y_train) == 0:
+        raise ValueError("Training labels are empty.")
+
+    if len(X_train) != len(y_train):
+        raise ValueError(
+            "X_train and y_train have inconsistent lengths."
+        )
+
+
+def _build_model_dictionary(
+    config: BaselineModelConfig,
+) -> Dict[str, object]:
+    models: Dict[str, object] = {}
+
+    if config.train_logistic_regression:
+        models["LogisticRegression"] = Pipeline(
+            [
+                ("scaler", StandardScaler()),
+                (
+                    "classifier",
+                    LogisticRegression(
+                        C=config.logistic_c,
+                        max_iter=config.logistic_max_iter,
+                        random_state=config.random_seed,
+                    ),
+                ),
+            ]
+        )
+
+    if config.train_random_forest:
+        models["RandomForest"] = RandomForestClassifier(
+            n_estimators=config.random_forest_estimators,
+            max_depth=config.random_forest_max_depth,
+            random_state=config.random_seed,
+            n_jobs=-1,
+        )
+
+    if config.train_extra_trees:
+        models["ExtraTrees"] = ExtraTreesClassifier(
+            n_estimators=config.extra_trees_estimators,
+            max_depth=config.extra_trees_max_depth,
+            random_state=config.random_seed,
+            n_jobs=-1,
+        )
+
+    if config.train_gradient_boosting:
+        models["GradientBoosting"] = GradientBoostingClassifier(
+            n_estimators=config.gradient_boosting_estimators,
+            learning_rate=config.gradient_boosting_learning_rate,
+            max_depth=config.gradient_boosting_max_depth,
+            random_state=config.random_seed,
+        )
+
+    return models
+
+
+def train_baseline_models(
+    X_train: pd.DataFrame | np.ndarray,
+    y_train: pd.Series | np.ndarray,
+    config: BaselineModelConfig = BaselineModelConfig(),
+) -> Dict[str, object]:
+    """
+    Train all configured baseline models.
+    """
+
+    _validate_training_data(X_train, y_train)
+
+    models = _build_model_dictionary(config)
+
+    trained_models: Dict[str, object] = {}
+
+    for name, model in models.items():
+        fitted = clone(model)
+        fitted.fit(X_train, y_train)
+        trained_models[name] = fitted
+
+    return trained_models
+
+
+def _compute_metrics(
+    y_true: np.ndarray,
+    y_pred: np.ndarray,
+    y_prob: np.ndarray,
+) -> Dict[str, float]:
+    metrics = {
+        "accuracy": accuracy_score(y_true, y_pred),
+        "balanced_accuracy": balanced_accuracy_score(
+            y_true,
+            y_pred,
+        ),
+        "precision": precision_score(
+            y_true,
+            y_pred,
+            zero_division=0,
+        ),
+        "recall": recall_score(
+            y_true,
+            y_pred,
+            zero_division=0,
+        ),
+        "f1": f1_score(
+            y_true,
+            y_pred,
+            zero_division=0,
+        ),
+        "mcc": matthews_corrcoef(
+            y_true,
+            y_pred,
+        ),
+    }
+
+    try:
+        metrics["roc_auc"] = roc_auc_score(
+            y_true,
+            y_prob,
+        )
+    except Exception:
+        metrics["roc_auc"] = np.nan
+
+    try:
+        metrics["average_precision"] = average_precision_score(
+            y_true,
+            y_prob,
+        )
+    except Exception:
+        metrics["average_precision"] = np.nan
+
+    return metrics
+
+
+def evaluate_baseline_models(
+    trained_models: Dict[str, object],
+    X_test: pd.DataFrame | np.ndarray,
+    y_test: pd.Series | np.ndarray,
+) -> pd.DataFrame:
+    """
+    Evaluate trained baseline models on an independent test set.
+    """
+
+    rows: List[Dict[str, float | str]] = []
+
+    for model_name, model in trained_models.items():
+
+        y_pred = model.predict(X_test)
+
+        if hasattr(model, "predict_proba"):
+            y_prob = model.predict_proba(X_test)[:, 1]
+        elif hasattr(model, "decision_function"):
+            raw = model.decision_function(X_test)
+
+            raw = (
+                raw - np.min(raw)
+            ) / (
+                np.max(raw) - np.min(raw) + 1e-8
+            )
+
+            y_prob = raw
+        else:
+            y_prob = y_pred.astype(float)
+
+        metrics = _compute_metrics(
+            np.asarray(y_test),
+            np.asarray(y_pred),
+            np.asarray(y_prob),
+        )
+
+        metrics["model"] = model_name
+
+        rows.append(metrics)
+
+    results = pd.DataFrame(rows)
+
+    if not results.empty:
+        results = results.sort_values(
+            "roc_auc",
+            ascending=False,
+        ).reset_index(drop=True)
+
+    return results
+
+
+def generate_baseline_predictions(
+    trained_models: Dict[str, object],
+    X: pd.DataFrame | np.ndarray,
+) -> pd.DataFrame:
+    """
+    Generate prediction probabilities from all baseline models.
+
+    Output is used later by SACU fusion experiments.
+    """
+
+    output: Dict[str, np.ndarray] = {}
+
+    for model_name, model in trained_models.items():
+
+        if hasattr(model, "predict_proba"):
+            output[f"{model_name}_prob"] = (
+                model.predict_proba(X)[:, 1]
+            )
+
+        elif hasattr(model, "decision_function"):
+            raw = model.decision_function(X)
+
+            raw = (
+                raw - np.min(raw)
+            ) / (
+                np.max(raw) - np.min(raw) + 1e-8
+            )
+
+            output[f"{model_name}_prob"] = raw
+
+        else:
+            output[f"{model_name}_prob"] = (
+                model.predict(X).astype(float)
+            )
+
+    return pd.DataFrame(output)
+
+
+def summarize_baseline_results(
+    results_df: pd.DataFrame,
+) -> pd.DataFrame:
+    """
+    Produce publication-ready baseline summary.
+    """
+
+    if results_df.empty:
+        return pd.DataFrame()
+
+    best_row = results_df.iloc[0]
+
+    summary = [
+        {
+            "metric": "n_models",
+            "value": int(len(results_df)),
+        },
+        {
+            "metric": "best_model",
+            "value": best_row["model"],
+        },
+        {
+            "metric": "best_roc_auc",
+            "value": float(best_row["roc_auc"]),
+        },
+        {
+            "metric": "best_balanced_accuracy",
+            "value": float(best_row["balanced_accuracy"]),
+        },
+        {
+            "metric": "best_f1",
+            "value": float(best_row["f1"]),
+        },
+    ]
+
+    return pd.DataFrame(summary)
+
+
+def extract_baseline_feature_importance(
+    trained_models: Dict[str, object],
+    feature_names: List[str],
+) -> pd.DataFrame:
+    """
+    Extract feature importance values whenever supported.
+
+    Supports:
+    - Random Forest
+    - Extra Trees
+    - Gradient Boosting
+    - Logistic Regression coefficients
+    """
+
+    rows: List[Dict[str, float | str]] = []
+
+    for model_name, model in trained_models.items():
+
+        estimator = model
+
+        if isinstance(model, Pipeline):
+            estimator = model.named_steps["classifier"]
+
+        if hasattr(estimator, "feature_importances_"):
+
+            importances = estimator.feature_importances_
+
+            for feature, importance in zip(
+                feature_names,
+                importances,
+            ):
+                rows.append(
+                    {
+                        "model": model_name,
+                        "feature": feature,
+                        "importance": float(importance),
+                    }
+                )
+
+        elif hasattr(estimator, "coef_"):
+
+            coefficients = np.abs(
+                estimator.coef_.ravel()
+            )
+
+            for feature, coef in zip(
+                feature_names,
+                coefficients,
+            ):
+                rows.append(
+                    {
+                        "model": model_name,
+                        "feature": feature,
+                        "importance": float(coef),
+                    }
+                )
+
+    importance_df = pd.DataFrame(rows)
+
+    if not importance_df.empty:
+        importance_df = importance_df.sort_values(
+            ["model", "importance"],
+            ascending=[True, False],
+        )
+
+    return importance_df.reset_index(drop=True)
+
+
+def select_best_baseline_model(
+    trained_models: Dict[str, object],
+    evaluation_df: pd.DataFrame,
+) -> object:
+    """
+    Return the highest ROC-AUC baseline model.
+    """
+
+    if evaluation_df.empty:
+        raise ValueError(
+            "Evaluation dataframe is empty."
+        )
+
+    best_model_name = (
+        evaluation_df.sort_values(
+            "roc_auc",
+            ascending=False,
+        )
+        .iloc[0]["model"]
+    )
+
+    return trained_models[best_model_name]
