@@ -1,0 +1,11 @@
+original_label,mapped_label,label_name,description
+0,0,Negative,No evidence of malignancy
+1,0,Benign,Benign finding
+2,1,Malignant,Confirmed malignancy
+3,1,Highly_Suspicious,High likelihood of malignancy
+BI-RADS 1,0,Negative,Normal examination
+BI-RADS 2,0,Benign,Benign finding
+BI-RADS 3,0,Probably_Benign,Short interval follow-up
+BI-RADS 4,1,Suspicious,Biopsy recommended
+BI-RADS 5,1,Highly_Suspicious,Strong suspicion of malignancy
+BI-RADS 6,1,Known_Malignancy,Pathology-confirmed cancer
