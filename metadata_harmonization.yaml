@@ -1,0 +1,336 @@
+```yaml
+# =============================================================================
+# Organizational-SACU-Mammography
+# Metadata Harmonization Configuration
+# =============================================================================
+
+project:
+  name: Organizational-SACU-Mammography
+  version: 1.0.0
+
+# =============================================================================
+# Input / Output Paths
+# =============================================================================
+
+paths:
+  input_metadata_dir: data/interim
+  output_metadata_dir: data/processed
+
+  harmonized_metadata_file:
+    data/processed/harmonized_metadata.csv
+
+  metadata_audit_file:
+    data/processed/metadata_audit_report.csv
+
+# =============================================================================
+# Required Metadata Fields
+# =============================================================================
+
+required_fields:
+
+  patient_id:
+    required: true
+
+  study_id:
+    required: true
+
+  image_id:
+    required: true
+
+  exam_date:
+    required: true
+
+  laterality:
+    required: true
+
+  view_position:
+    required: true
+
+  diagnosis_label:
+    required: true
+
+# =============================================================================
+# Patient Identifier Harmonization
+# =============================================================================
+
+patient_identifier:
+
+  enabled: true
+
+  standard_name: patient_id
+
+  remove_whitespace: true
+  convert_to_string: true
+  uppercase: false
+
+  missing_policy: reject_record
+
+# =============================================================================
+# Study Identifier Harmonization
+# =============================================================================
+
+study_identifier:
+
+  enabled: true
+
+  standard_name: study_id
+
+  remove_whitespace: true
+  convert_to_string: true
+
+  missing_policy: reject_record
+
+# =============================================================================
+# Examination Date Harmonization
+# =============================================================================
+
+exam_date:
+
+  enabled: true
+
+  standard_name: exam_date
+
+  output_format: "%Y-%m-%d"
+
+  parse_multiple_formats: true
+
+  accepted_formats:
+    - "%Y-%m-%d"
+    - "%Y/%m/%d"
+    - "%d-%m-%Y"
+    - "%m/%d/%Y"
+
+  missing_policy: reject_record
+
+# =============================================================================
+# Laterality Harmonization
+# =============================================================================
+
+laterality:
+
+  enabled: true
+
+  standard_name: laterality
+
+  mappings:
+
+    LEFT:
+      - LEFT
+      - Left
+      - L
+      - l
+
+    RIGHT:
+      - RIGHT
+      - Right
+      - R
+      - r
+
+  valid_values:
+    - LEFT
+    - RIGHT
+
+  missing_policy: reject_record
+
+# =============================================================================
+# View Position Harmonization
+# =============================================================================
+
+view_position:
+
+  enabled: true
+
+  standard_name: view_position
+
+  mappings:
+
+    CC:
+      - CC
+      - CranioCaudal
+      - Cranio-Caudal
+
+    MLO:
+      - MLO
+      - MedioLateralOblique
+      - Mediolateral Oblique
+
+  valid_values:
+    - CC
+    - MLO
+
+  missing_policy: reject_record
+
+# =============================================================================
+# Diagnostic Label Harmonization
+# =============================================================================
+
+labels:
+
+  enabled: true
+
+  standard_name: diagnosis_label
+
+  binary_mapping:
+
+    benign:
+      - BENIGN
+      - Benign
+      - B
+      - 0
+
+    malignant:
+      - MALIGNANT
+      - Malignant
+      - Cancer
+      - Positive
+      - 1
+
+  output_labels:
+
+    benign: 0
+    malignant: 1
+
+  unknown_policy: reject_record
+
+# =============================================================================
+# Duplicate Detection
+# =============================================================================
+
+duplicate_detection:
+
+  enabled: true
+
+  primary_key:
+    - patient_id
+    - study_id
+    - image_id
+
+  remove_exact_duplicates: true
+
+  report_duplicates: true
+
+# =============================================================================
+# Missing Value Policy
+# =============================================================================
+
+missing_values:
+
+  enabled: true
+
+  accepted_missing_fields:
+    - prior_exam_date
+    - temporal_sequence_id
+
+  reject_missing_required_fields: true
+
+# =============================================================================
+# Temporal Metadata
+# =============================================================================
+
+temporal_metadata:
+
+  enabled: true
+
+  create_temporal_index: true
+
+  sort_by:
+    - patient_id
+    - exam_date
+
+  generate_exam_order: true
+
+  generate_prior_exam_flag: true
+
+# =============================================================================
+# Metadata Validation
+# =============================================================================
+
+validation:
+
+  enabled: true
+
+  checks:
+
+    unique_patient_ids: true
+
+    valid_exam_dates: true
+
+    valid_laterality: true
+
+    valid_view_positions: true
+
+    valid_labels: true
+
+    duplicate_exam_detection: true
+
+# =============================================================================
+# Audit Reporting
+# =============================================================================
+
+audit:
+
+  enabled: true
+
+  report_missing_fields: true
+
+  report_invalid_labels: true
+
+  report_invalid_dates: true
+
+  report_invalid_views: true
+
+  report_invalid_laterality: true
+
+  report_duplicates: true
+
+# =============================================================================
+# Output Metadata Fields
+# =============================================================================
+
+output_fields:
+
+  - patient_id
+  - study_id
+  - image_id
+  - exam_date
+  - laterality
+  - view_position
+  - diagnosis_label
+  - temporal_exam_order
+  - has_prior_exam
+
+# =============================================================================
+# Reproducibility
+# =============================================================================
+
+reproducibility:
+
+  random_seed: 42
+
+# =============================================================================
+# Logging
+# =============================================================================
+
+logging:
+
+  level: INFO
+
+  save_log_file: true
+
+  log_file:
+    data/processed/metadata_harmonization.log
+
+# =============================================================================
+# Reports
+# =============================================================================
+
+reports:
+
+  save_summary_report: true
+
+  summary_report_file:
+    results/reports/metadata_harmonization_report.txt
+
+  audit_report_file:
+    data/processed/metadata_audit_report.csv
+```
