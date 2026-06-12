@@ -1,0 +1,278 @@
+```yaml
+# =============================================================================
+# Organizational-SACU-Mammography
+# Multi-View Pairing Configuration
+# =============================================================================
+
+project:
+  name: Organizational-SACU-Mammography
+  version: 1.0.0
+
+# =============================================================================
+# Input / Output Paths
+# =============================================================================
+
+paths:
+
+  input_metadata:
+    data/processed/harmonized_metadata.csv
+
+  output_pairs:
+    data/processed/multiview_pairs.csv
+
+  output_exam_manifest:
+    data/processed/examination_manifest.csv
+
+  output_pairing_audit:
+    data/processed/multiview_pairing_audit.csv
+
+# =============================================================================
+# Required Metadata Fields
+# =============================================================================
+
+required_fields:
+
+  - patient_id
+  - study_id
+  - image_id
+  - exam_date
+  - laterality
+  - view_position
+  - diagnosis_label
+
+# =============================================================================
+# Supported View Types
+# =============================================================================
+
+views:
+
+  left_cc:
+    laterality: LEFT
+    view: CC
+
+  left_mlo:
+    laterality: LEFT
+    view: MLO
+
+  right_cc:
+    laterality: RIGHT
+    view: CC
+
+  right_mlo:
+    laterality: RIGHT
+    view: MLO
+
+# =============================================================================
+# Multi-View Pairing Rules
+# =============================================================================
+
+pairing:
+
+  enabled: true
+
+  grouping_keys:
+    - patient_id
+    - study_id
+
+  require_same_exam_date: true
+
+  allow_multiple_images_per_view: false
+
+  pairing_strategy:
+    exact_exam_matching
+
+# =============================================================================
+# Examination Completeness
+# =============================================================================
+
+completeness:
+
+  complete_exam_definition:
+
+    required_views:
+      - LEFT_CC
+      - LEFT_MLO
+      - RIGHT_CC
+      - RIGHT_MLO
+
+  partial_exam_allowed: true
+
+  minimum_required_views: 2
+
+# =============================================================================
+# Missing View Handling
+# =============================================================================
+
+missing_views:
+
+  detect_missing_views: true
+
+  save_missing_view_report: true
+
+  missing_view_policy:
+    retain_exam
+
+  create_view_availability_flags: true
+
+# =============================================================================
+# Duplicate View Handling
+# =============================================================================
+
+duplicates:
+
+  detect_duplicate_views: true
+
+  duplicate_policy:
+    keep_first
+
+  save_duplicate_report: true
+
+# =============================================================================
+# Bilateral Pair Construction
+# =============================================================================
+
+bilateral_pairing:
+
+  enabled: true
+
+  create_cc_bilateral_pairs: true
+
+  create_mlo_bilateral_pairs: true
+
+  require_matching_exam: true
+
+# =============================================================================
+# Multi-View Relationship Construction
+# =============================================================================
+
+multiview_relationships:
+
+  enabled: true
+
+  create_left_cc_mlo_pair: true
+
+  create_right_cc_mlo_pair: true
+
+  create_full_exam_relationships: true
+
+# =============================================================================
+# Temporal Preparation
+# =============================================================================
+
+temporal_preparation:
+
+  enabled: true
+
+  preserve_exam_date: true
+
+  preserve_exam_order: true
+
+  create_temporal_link_keys: true
+
+# =============================================================================
+# Quality Control
+# =============================================================================
+
+quality_control:
+
+  enabled: true
+
+  verify_unique_exams: true
+
+  verify_view_consistency: true
+
+  verify_laterality_consistency: true
+
+  verify_study_integrity: true
+
+# =============================================================================
+# Output Schema
+# =============================================================================
+
+output_columns:
+
+  - patient_id
+  - study_id
+  - exam_date
+
+  - left_cc_image
+  - left_mlo_image
+
+  - right_cc_image
+  - right_mlo_image
+
+  - left_cc_available
+  - left_mlo_available
+
+  - right_cc_available
+  - right_mlo_available
+
+  - complete_exam
+
+  - diagnosis_label
+
+# =============================================================================
+# Statistics
+# =============================================================================
+
+statistics:
+
+  calculate_complete_exam_count: true
+
+  calculate_partial_exam_count: true
+
+  calculate_missing_view_frequency: true
+
+  calculate_duplicate_view_frequency: true
+
+  calculate_view_distribution: true
+
+# =============================================================================
+# Audit Outputs
+# =============================================================================
+
+audit:
+
+  save_pairing_summary: true
+
+  save_missing_view_report: true
+
+  save_duplicate_report: true
+
+  save_exam_completeness_report: true
+
+# =============================================================================
+# Reproducibility
+# =============================================================================
+
+reproducibility:
+
+  random_seed: 42
+
+# =============================================================================
+# Logging
+# =============================================================================
+
+logging:
+
+  level: INFO
+
+  save_log_file: true
+
+  log_file:
+    data/processed/multiview_pairing.log
+
+# =============================================================================
+# Reports
+# =============================================================================
+
+reports:
+
+  save_summary_report: true
+
+  summary_report:
+    results/reports/multiview_pairing_report.txt
+
+  audit_report:
+    data/processed/multiview_pairing_audit.csv
+```
