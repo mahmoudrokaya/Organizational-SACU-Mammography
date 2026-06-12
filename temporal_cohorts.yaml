@@ -1,0 +1,292 @@
+```yaml id="t7lpv8"
+# =============================================================================
+# Organizational-SACU-Mammography
+# Temporal Cohort Construction Configuration
+# =============================================================================
+
+project:
+  name: Organizational-SACU-Mammography
+  version: 1.0.0
+
+# =============================================================================
+# Input / Output Paths
+# =============================================================================
+
+paths:
+
+  input_exam_manifest:
+    data/processed/examination_manifest.csv
+
+  input_multiview_pairs:
+    data/processed/multiview_pairs.csv
+
+  output_temporal_cohorts:
+    data/processed/temporal_cohorts.csv
+
+  output_temporal_summary:
+    data/processed/temporal_cohort_summary.csv
+
+  output_temporal_audit:
+    data/processed/temporal_cohort_audit.csv
+
+# =============================================================================
+# Required Fields
+# =============================================================================
+
+required_fields:
+
+  - patient_id
+  - study_id
+  - exam_date
+  - diagnosis_label
+
+# =============================================================================
+# Temporal Ordering
+# =============================================================================
+
+temporal_ordering:
+
+  enabled: true
+
+  sort_keys:
+    - patient_id
+    - exam_date
+
+  ascending_order: true
+
+  create_exam_index: true
+
+# =============================================================================
+# Longitudinal Cohort Construction
+# =============================================================================
+
+cohort_construction:
+
+  enabled: true
+
+  grouping_key:
+    patient_id
+
+  minimum_exams_for_temporal_case: 2
+
+  create_single_exam_cohort: true
+
+# =============================================================================
+# Prior Examination Linking
+# =============================================================================
+
+prior_exam_linking:
+
+  enabled: true
+
+  create_prior_exam_reference: true
+
+  create_next_exam_reference: true
+
+  create_temporal_gap_days: true
+
+# =============================================================================
+# Temporal Feature Eligibility
+# =============================================================================
+
+temporal_eligibility:
+
+  enabled: true
+
+  temporal_case_definition:
+
+    minimum_prior_exams: 1
+
+  create_temporal_flag: true
+
+  create_non_temporal_flag: true
+
+# =============================================================================
+# Temporal Window Analysis
+# =============================================================================
+
+temporal_windows:
+
+  enabled: true
+
+  calculate_time_since_prior_exam: true
+
+  calculate_time_to_next_exam: true
+
+  unit:
+    days
+
+# =============================================================================
+# Cohort Labels
+# =============================================================================
+
+cohort_labels:
+
+  temporal_case:
+    value: 1
+
+  non_temporal_case:
+    value: 0
+
+# =============================================================================
+# Missing Prior Examination Handling
+# =============================================================================
+
+missing_prior_exam:
+
+  enabled: true
+
+  policy:
+    retain_case
+
+  create_missing_prior_flag: true
+
+  use_temporal_masking: true
+
+# =============================================================================
+# Examination Sequence Statistics
+# =============================================================================
+
+sequence_statistics:
+
+  enabled: true
+
+  calculate_exam_count_per_patient: true
+
+  calculate_max_sequence_length: true
+
+  calculate_mean_sequence_length: true
+
+  calculate_temporal_case_frequency: true
+
+# =============================================================================
+# Quality Control
+# =============================================================================
+
+quality_control:
+
+  enabled: true
+
+  verify_chronological_order: true
+
+  verify_unique_exam_sequence: true
+
+  verify_exam_date_validity: true
+
+  verify_patient_consistency: true
+
+# =============================================================================
+# Output Columns
+# =============================================================================
+
+output_columns:
+
+  - patient_id
+  - study_id
+  - exam_date
+
+  - temporal_exam_index
+
+  - prior_study_id
+  - prior_exam_date
+
+  - next_study_id
+  - next_exam_date
+
+  - temporal_gap_days
+
+  - total_exams_for_patient
+
+  - temporal_case
+
+  - diagnosis_label
+
+# =============================================================================
+# Cohort Summary Statistics
+# =============================================================================
+
+summary_statistics:
+
+  total_patients: true
+
+  total_exams: true
+
+  temporal_patients: true
+
+  non_temporal_patients: true
+
+  mean_exams_per_patient: true
+
+  median_exams_per_patient: true
+
+  max_exams_per_patient: true
+
+  temporal_gap_distribution: true
+
+# =============================================================================
+# Temporal Pathway Preparation
+# =============================================================================
+
+temporal_pathway:
+
+  enabled: true
+
+  generate_temporal_sequence_id: true
+
+  preserve_exam_order: true
+
+  preserve_prior_exam_link: true
+
+  preserve_temporal_gap_information: true
+
+# =============================================================================
+# Audit Outputs
+# =============================================================================
+
+audit:
+
+  enabled: true
+
+  report_patients_without_prior_exams: true
+
+  report_invalid_exam_dates: true
+
+  report_temporal_order_conflicts: true
+
+  report_sequence_statistics: true
+
+# =============================================================================
+# Reproducibility
+# =============================================================================
+
+reproducibility:
+
+  random_seed: 42
+
+# =============================================================================
+# Logging
+# =============================================================================
+
+logging:
+
+  level: INFO
+
+  save_log_file: true
+
+  log_file:
+    data/processed/temporal_cohorts.log
+
+# =============================================================================
+# Reports
+# =============================================================================
+
+reports:
+
+  save_summary_report: true
+
+  summary_report:
+    results/reports/temporal_cohort_report.txt
+
+  audit_report:
+    data/processed/temporal_cohort_audit.csv
+```
