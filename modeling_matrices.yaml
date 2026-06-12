@@ -1,0 +1,316 @@
+```yaml
+# =============================================================================
+# Organizational-SACU-Mammography
+# SACU Modeling Matrices Configuration
+# =============================================================================
+
+project:
+  name: Organizational-SACU-Mammography
+  version: 1.0.0
+
+# =============================================================================
+# Input / Output Paths
+# =============================================================================
+
+paths:
+
+  input_feature_matrix:
+    data/processed/features/organizational_feature_matrix.csv
+
+  input_feature_summary:
+    data/processed/features/feature_extraction_summary.csv
+
+  output_matrix_dir:
+    data/processed/modeling_matrices
+
+  output_train_matrix:
+    data/processed/modeling_matrices/X_train.csv
+
+  output_validation_matrix:
+    data/processed/modeling_matrices/X_validation.csv
+
+  output_test_matrix:
+    data/processed/modeling_matrices/X_test.csv
+
+# =============================================================================
+# Target Definition
+# =============================================================================
+
+target:
+
+  column_name:
+    diagnosis_label
+
+  positive_class:
+    1
+
+  negative_class:
+    0
+
+# =============================================================================
+# Identifier Columns
+# =============================================================================
+
+identifiers:
+
+  remove_from_modeling: true
+
+  columns:
+    - patient_id
+    - study_id
+    - exam_date
+
+# =============================================================================
+# Feature Group Mapping
+# =============================================================================
+
+feature_groups:
+
+  LocalRegionalAgent:
+
+    prefix_patterns:
+      - local_
+      - regional_
+
+  MultiViewAgent:
+
+    prefix_patterns:
+      - multiview_
+      - cc_mlo_
+
+  BilateralAgent:
+
+    prefix_patterns:
+      - bilateral_
+      - left_right_
+
+  TemporalSpatialAgent:
+
+    prefix_patterns:
+      - temporal_
+      - longitudinal_
+
+  MetadataAgent:
+
+    prefix_patterns:
+      - metadata_
+
+  AdaptiveControlAgent:
+
+    prefix_patterns:
+      - adaptive_
+      - pathway_
+
+# =============================================================================
+# Pathway Matrix Construction
+# =============================================================================
+
+pathway_matrices:
+
+  enabled: true
+
+  create_localregional_matrix: true
+
+  create_multiview_matrix: true
+
+  create_bilateral_matrix: true
+
+  create_temporalspatial_matrix: true
+
+  create_metadata_matrix: true
+
+  create_adaptivecontrol_matrix: true
+
+# =============================================================================
+# Missing Value Processing
+# =============================================================================
+
+missing_values:
+
+  enabled: true
+
+  strategy:
+    median
+
+  preserve_pathway_masks: true
+
+# =============================================================================
+# Feature Scaling
+# =============================================================================
+
+scaling:
+
+  enabled: true
+
+  method:
+    standard
+
+  fit_on_training_only: true
+
+# =============================================================================
+# Constant Feature Removal
+# =============================================================================
+
+constant_features:
+
+  enabled: true
+
+  variance_threshold:
+    0.0
+
+# =============================================================================
+# Correlation Filtering
+# =============================================================================
+
+correlation_filter:
+
+  enabled: false
+
+  threshold:
+    0.95
+
+# =============================================================================
+# Data Partitioning
+# =============================================================================
+
+partitioning:
+
+  strategy:
+    predefined_manifest
+
+  preserve_patient_level_splits: true
+
+  preserve_class_distribution: true
+
+# =============================================================================
+# Class Imbalance
+# =============================================================================
+
+class_imbalance:
+
+  enabled: true
+
+  strategy:
+    class_weight
+
+  apply_only_during_training: true
+
+# =============================================================================
+# Matrix Validation
+# =============================================================================
+
+validation:
+
+  enabled: true
+
+  checks:
+
+    no_missing_values: true
+
+    no_infinite_values: true
+
+    target_present: true
+
+    class_labels_valid: true
+
+    pathway_dimensions_valid: true
+
+# =============================================================================
+# SACU Agent Feature Export
+# =============================================================================
+
+agent_exports:
+
+  save_localregional_matrix: true
+
+  save_multiview_matrix: true
+
+  save_bilateral_matrix: true
+
+  save_temporalspatial_matrix: true
+
+  save_metadata_matrix: true
+
+  save_adaptivecontrol_matrix: true
+
+# =============================================================================
+# Output Files
+# =============================================================================
+
+outputs:
+
+  save_combined_matrix: true
+
+  save_agent_matrices: true
+
+  save_feature_group_mapping: true
+
+  save_matrix_statistics: true
+
+  save_modeling_manifest: true
+
+# =============================================================================
+# Matrix Statistics
+# =============================================================================
+
+statistics:
+
+  total_features: true
+
+  pathway_feature_counts: true
+
+  training_samples: true
+
+  validation_samples: true
+
+  testing_samples: true
+
+  class_distribution: true
+
+# =============================================================================
+# Reproducibility
+# =============================================================================
+
+reproducibility:
+
+  random_seed: 42
+
+# =============================================================================
+# Logging
+# =============================================================================
+
+logging:
+
+  level: INFO
+
+  save_log_file: true
+
+  log_file:
+    data/processed/modeling_matrices/modeling_matrices.log
+
+# =============================================================================
+# Reports
+# =============================================================================
+
+reports:
+
+  save_summary_report: true
+
+  save_pathway_statistics: true
+
+  save_feature_mapping_report: true
+
+  save_class_distribution_report: true
+
+  summary_report_file:
+    results/reports/modeling_matrices_report.txt
+
+  pathway_statistics_file:
+    data/processed/modeling_matrices/pathway_statistics.csv
+
+  feature_mapping_file:
+    data/processed/modeling_matrices/feature_group_mapping.csv
+
+  class_distribution_file:
+    data/processed/modeling_matrices/class_distribution.csv
+```
