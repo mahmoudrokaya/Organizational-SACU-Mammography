@@ -1,0 +1,179 @@
+```yaml
+# =============================================================================
+# Organizational-SACU-Mammography
+# Preprocessing Configuration
+# =============================================================================
+
+project:
+  name: Organizational-SACU-Mammography
+  version: 1.0.0
+
+# =============================================================================
+# Input / Output Paths
+# =============================================================================
+
+paths:
+  raw_data_dir: data/raw
+  interim_data_dir: data/interim
+  processed_data_dir: data/processed
+  manifests_dir: data/manifests
+
+# =============================================================================
+# DICOM Processing
+# =============================================================================
+
+dicom:
+  read_metadata: true
+  verify_pixel_data: true
+  skip_corrupted_files: true
+  save_processing_log: true
+
+# =============================================================================
+# Photometric Interpretation
+# =============================================================================
+
+photometric:
+  auto_invert_monochrome1: true
+  preserve_monochrome2: true
+
+# =============================================================================
+# Orientation Normalization
+# =============================================================================
+
+orientation:
+  enabled: true
+  standardize_left_right: true
+  standardize_cc_mlo_views: true
+  verify_orientation_tags: true
+
+# =============================================================================
+# Breast Region Extraction
+# =============================================================================
+
+breast_region:
+  enabled: true
+
+  foreground_detection:
+    method: otsu_threshold
+    apply_morphology: true
+
+  cropping:
+    remove_background: true
+    remove_scanner_borders: true
+    padding_pixels: 10
+
+  quality_control:
+    minimum_breast_area_ratio: 0.10
+    reject_empty_regions: true
+
+# =============================================================================
+# Image Resizing
+# =============================================================================
+
+resizing:
+  enabled: true
+
+  method: area
+
+  target_size:
+    width: 1024
+    height: 1024
+
+  preserve_aspect_ratio: true
+  pad_to_target_size: true
+
+# =============================================================================
+# Intensity Processing
+# =============================================================================
+
+intensity_normalization:
+  enabled: true
+
+  method: minmax
+
+  output_range:
+    min: 0.0
+    max: 1.0
+
+  clip_percentiles:
+    enabled: true
+    lower: 1.0
+    upper: 99.0
+
+# =============================================================================
+# Quality Control
+# =============================================================================
+
+quality_control:
+  enabled: true
+
+  checks:
+    verify_non_empty_image: true
+    verify_breast_region_present: true
+    verify_valid_dimensions: true
+    verify_metadata_consistency: true
+
+  logging:
+    save_failed_cases: true
+    save_qc_report: true
+
+# =============================================================================
+# Metadata Handling
+# =============================================================================
+
+metadata:
+  extract_patient_id: true
+  extract_study_id: true
+  extract_exam_date: true
+  extract_view_position: true
+  extract_laterality: true
+
+  anonymization:
+    enabled: false
+
+# =============================================================================
+# Missing Data Handling
+# =============================================================================
+
+missing_data:
+  allow_missing_prior_exam: true
+  allow_missing_temporal_information: true
+  allow_missing_metadata_fields: false
+
+# =============================================================================
+# Reproducibility
+# =============================================================================
+
+reproducibility:
+  random_seed: 42
+
+# =============================================================================
+# Logging
+# =============================================================================
+
+logging:
+  level: INFO
+
+  save_log_file: true
+
+  log_file:
+    data/interim/preprocessing_log.txt
+
+# =============================================================================
+# Output Files
+# =============================================================================
+
+outputs:
+  save_preprocessed_metadata: true
+  save_qc_summary: true
+  save_preprocessing_report: true
+
+  metadata_file:
+    data/interim/preprocessed_metadata.csv
+
+  qc_summary_file:
+    data/interim/preprocessing_qc_summary.csv
+
+  report_file:
+    results/reports/preprocessing_report.txt
+```
